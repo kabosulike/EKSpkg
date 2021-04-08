@@ -1,0 +1,5 @@
+DeclareGlobalFunction("BrauerMorphismOfEndRingAsAlgebraHomomorphism");
+
+DeclareGlobalFunction("InvariantBasisAndBrauerQuotientOfTrivialSourceModule");
+
+DeclareSynonym("InvariantBasisAndBrauerQuotient", InvariantBasisAndBrauerQuotientOfTrivialSourceModule);
