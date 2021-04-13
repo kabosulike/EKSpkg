@@ -1,5 +1,5 @@
 # Test for GCtau
-gap> p:=7;;
+gap> p:=5;;
 gap> k:=GF(p);;
 gap> G:=SL(2,p);;
 gap> PG:=SylowSubgroup(G,p);;

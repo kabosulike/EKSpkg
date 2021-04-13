@@ -50,7 +50,59 @@ InstallGlobalFunction("BasisModuleHomomorphisms", function( mod1, mod2 )
     fi;
 end);
 
-    
+# <m>: a GModule
+# return: the maximum subspace of <m> acted trivialy by G
+InstallGlobalFunction("BasisInvariantsOfGModule",function(m)
+    local d,equ,i,j,idm;
+    d:=m.dimension;
+    idm:=IdentityMat(d);
+    equ:=HorizontalJointedMats(List(m.generators,x->x-idm));
+    return NullspaceMat(equ);
+end);
+
+InstallGlobalFunction("TransTensorToMat",function(dimU,dimV,one_one_tensor)
+    local i,j,M;
+    M:=[];
+    for i in [1..dimU] do
+        M[i]:=[];
+        for j in [1..dimV] do
+            M[i][j]:=one_one_tensor[(i-1)*dimV+j];
+        od;
+    od;
+    return M;
+end);
+InstallGlobalFunction("HorizontalJointedMats",function(mats)
+    local tmats;
+    tmats:=List(mats,x->TransposedMat(x));
+    return TransposedMat(Concatenation(tmats));
+end);
+
+# <a>,<b>: natural numbers
+# <abvec>: a vector whose length equals to <a><b>
+# return: the (<a>,<b>)-matrix which is splited into by <abvec>  
+InstallGlobalFunction("SpritVactorIntoMatrix",function(a,b,abvec)
+    local i,j,M;
+    M:=[];
+    for i in [1..a] do
+        M[i]:=[];
+        for j in [1..b] do
+            M[i][j]:=abvec[(i-1)*b+j];
+        od;
+    od;
+    return M;
+end);
+
+# Hom(U,W)~(U* \otimes W)^G
+# <m1>,<m2>: GModules
+# return: the basis corresponding the camoninal basis of U* \otimes W by the above natural above isomorphims
+InstallGlobalFunction("AlternativeBasisModuleHomomorphisms",function(m1,m2)
+    local dualm1,dualm1tensorm2,inv;
+    dualm1:=DualGModule(m1);
+    dualm1tensorm2:=TensorProductGModule(dualm1,m2);
+    inv:=BasisInvariantsOfGModule(dualm1tensorm2);
+    return List(inv,x->ImmutableMatrix(m1.field,TransTensorToMat(m1.dimension,m2.dimension,x)));
+end);
+
 # Arg
 #   <record> is a record with RecNames 
 #       [ x", "y", "z", "f", "r" ]. 

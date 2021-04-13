@@ -27,3 +27,9 @@ DeclareGlobalFunction("IsTensorSplitEpimorphism");
 DeclareGlobalFunction("MapstoLinearExtensionOfGroupHomomorphism");
 
 DeclareGlobalFunction("CheckSizeLinearmapMatrix");
+
+DeclareGlobalFunction("BasisInvariantsOfGModule");
+DeclareGlobalFunction("TransTensorToMat");
+DeclareGlobalFunction("HorizontalJointedMats");
+DeclareGlobalFunction("SpritVactorIntoMatrix");
+DeclareGlobalFunction("AlternativeBasisModuleHomomorphisms");

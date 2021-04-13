@@ -99,7 +99,6 @@ InstallGlobalFunction("ProjectiveCoverOfGModule", function( args... )
     componentsmat:=[];
     components:=[];
     for i in [1..Length(irrs)] do
-            # Error("aaaa");
         homs:=BasisModuleHomomorphisms(PIMs[i],module);
         for j in [1..Length(maximals[i])] do
             quot:=SubSpaceQuotientMatrix(maximals[i][j],supdim,field);
