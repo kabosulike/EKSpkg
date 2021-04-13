@@ -1,0 +1,9 @@
+LoadPackage("EKSpackage");
+G:=SymmetricGroup(4);
+k:=GF(2);
+irrs:=IrreducibleGModules(G,k)[2];
+reg:=RegularModule(G,k)[2];
+decreg:=MTX.Indecomposition(reg);
+PIM:=PrincipalIndecomposableModules(decreg,irrs);
+PP:=IndecomposableProjectiveModules(decreg,irrs);
+ProjectiveCoverOfGModule(irrs[1],PIM,irrs);

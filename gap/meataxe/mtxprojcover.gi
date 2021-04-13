@@ -63,7 +63,7 @@ end);
 # <args> = [ <module>, <PIMs>(, <irrs> )]
 InstallGlobalFunction("ProjectiveCoverOfGModule", function( args... )
     local module, PIMs, irrs, 
-        ii,jj,kk,maximals,homs,componentsmat,components,quot,supdim,field;
+        i,j,k,maximals,homs,componentsmat,components,quot,supdim,field;
     # if module="Zero GModule" then
     #     return rec(Epimorphism:=[],ProjectiveCover:="Zero GModule",BasisOfSyzygy:=[]);
     # fi;
@@ -98,18 +98,17 @@ InstallGlobalFunction("ProjectiveCoverOfGModule", function( args... )
     maximals:=List(irrs,x->MaximalSubGModules(x,module));
     componentsmat:=[];
     components:=[];
-    for ii in [1..Length(irrs)] do
-            # Error("aaaa");
-        homs:=BasisModuleHomomorphisms(PIMs[ii],module);
-        for jj in [1..Length(maximals[ii])] do
-            quot:=SubSpaceQuotientMatrix(maximals[ii][jj],supdim,field);
-            kk:=1;
-            while homs[kk]*quot=Zero(homs[kk]*quot) do
-                kk:=kk+1;
+    for i in [1..Length(irrs)] do
+        homs:=BasisModuleHomomorphisms(PIMs[i],module);
+        for j in [1..Length(maximals[i])] do
+            quot:=SubSpaceQuotientMatrix(maximals[i][j],supdim,field);
+            k:=1;
+            while homs[k]*quot=Zero(homs[k]*quot) do
+                k:=k+1;
             od;
-            Add(componentsmat,homs[kk]);
-            Add(components,PIMs[ii]);
-            Remove(homs,kk);
+            Add(componentsmat,homs[k]);
+            Add(components,PIMs[i]);
+            Remove(homs,k);
         od;
     od;
     componentsmat:=Concatenation(componentsmat);
