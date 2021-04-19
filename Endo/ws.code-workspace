@@ -1,0 +1,32 @@
+﻿{
+	"settings": {
+		// "terminal.integrated.shell.windows": "powershell.exe",
+		"terminal.integrated.shell.windows": "cmd.exe",
+    	"terminal.integrated.shellArgs.windows": [
+            // "C:\\gap-4.11.0\\bin\\gapcmd.bat",
+            // "-o 4294967296"
+            // "-o 4096000000"
+        ],
+		"editor.tabSize": 4,
+        "editor.detectIndentation": false,
+         "files.associations": {
+            "*.log":"gap",
+            "*.txt":"gap"
+        }
+	},
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "C:\\gap-4.11.0\\lib"
+		},
+		{
+			"path": "C:\\gap-4.11.0\\src"
+		},
+		{
+			"path": "C:\\gap-4.11.0\\pkg\\EKSpkg"
+		}
+	],
+        
+}
