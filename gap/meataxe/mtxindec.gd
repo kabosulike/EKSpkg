@@ -11,3 +11,7 @@ DeclareGlobalFunction("AllIndecomposableGModulesFixedVertexSourcePair");
 DeclareGlobalFunction("AllIndecomposableModulesCyclicVertex");
 
 DeclareGlobalFunction("IndecompositionOfGModuleAndVetexClasses");
+
+DeclareGlobalFunction("GroupSetsContaining");
+
+DeclareGlobalFunction("GreenLocalSystem");

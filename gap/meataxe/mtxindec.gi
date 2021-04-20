@@ -215,3 +215,40 @@ InstallGlobalFunction("IndecompositionOfGModuleAndVetexClasses", function(g, mod
         multiplicities := List(hc, x->Size(x.indices) )
     );
 end);
+
+# --------------------------------------------------------
+# Functions for "Green Correspondence"
+# 
+# <G>: a group
+# <Y>,<Z>: sets of subgroups of <G>
+InstallGlobalFunction("GroupSetsContaining",function(G,Y,Z)
+    local y,z;
+    for y in Y do
+        for z in Z do
+            if IsSubgroup(z,y)  then
+                return true;
+            fi;
+        od;
+    od;
+    return false;
+end);
+
+InstallGlobalFunction("GreenLocalSystem",function(G,Q,H,p)
+    local xG, yH, zG, zH, NGQ, QG, QH, elQG, fs,pccsubG, pccsubH;
+    NGQ:=Normalizer(G,Q);
+    if not IsSubgroup(H,NGQ) then
+        Error("LocalSub doesn't contain Normalizer.\n");
+    fi;
+    QG:=ConjugacyClassSubgroups(G,Q);
+    QH:=ConjugacyClassSubgroups(H,Q);
+    elQG:=Elements(QG);
+    fs:=Filtered(elQG,a->not RepresentativeAction(G,Q,a) in H);
+    xG:=Set(fs,i->AsSubgroup(G,Intersection(Q,i)));
+    yH:=Set(fs,i->AsSubgroup(H,Intersection(H,i)));
+    pccsubG:=ModularConjugacyClassesSubgroups(G,p);
+    pccsubH:=ModularConjugacyClassesSubgroups(H,p);
+
+    zG:=Filtered(pccsubG,i->not(GroupSetsContaining(G,Elements(i),xG)));
+    zH:=Filtered(pccsubH,i->not(GroupSetsContaining(H,Elements(i),yH)));
+    return rec(x:=xG,y:=yH,z_conjGlobal:=zG,z_conjLocal:=zH);
+end);
