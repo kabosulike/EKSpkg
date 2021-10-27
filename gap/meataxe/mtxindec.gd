@@ -15,3 +15,9 @@ DeclareGlobalFunction("IndecompositionOfGModuleAndVetexClasses");
 DeclareGlobalFunction("GroupSetsContaining");
 
 DeclareGlobalFunction("GreenLocalSystem");
+
+# DeclareGlobalFunction("GreenCorrespondenceGlobalToLocalFixedzG");
+
+# DeclareGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH");
+
+# DeclareGlobalFunction("GreenCorrespondence");

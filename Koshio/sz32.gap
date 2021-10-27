@@ -21,3 +21,17 @@ Display(FixedIrreduciblesRadicalLayerMultiplicities(PIMngQ[1],irrngQ[2]));
 IsCyclic(ngQ/Q);
 Ip1:=InducedGModule(g,ngQ,PIMngQ[2]);
 SaveWorkspace("Sz32");
+g:=DihedralGroup(14);
+k:=GF(2^3);
+kx:=Units(k);
+GroupHomomorphismByImages(g,GL(7,k),GeneratorsOfGroup(g),[IdentityMat(7,k),IdentityMat(7,k)]);
+GModuleByMats([IdentityMat(7,k),IdentityMat(7,k)],k);
+TwoCohomology(g,kx);
+
+
+LoadPackage("EKSPackage");
+g:=AlternatingGroup(5);
+p:=2;
+PP:=SylowSubgroup(g,p);
+dc:=DoubleCosetRepsAndSizes(g,PP,PP);
+ModularConjugacyClassesSubgroups(g,p);
