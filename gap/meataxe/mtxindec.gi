@@ -252,3 +252,79 @@ InstallGlobalFunction("GreenLocalSystem",function(G,Q,H,p)
     zH:=Filtered(pccsubH,i->not(GroupSetsContaining(H,Elements(i),yH)));
     return rec(x:=xG,y:=yH,z_conjGlobal:=zG,z_conjLocal:=zH);
 end);
+
+# InstallGlobalFunction("GreenCorrespondenceGlobalToLocalFixedzG",function(G,H,m,zG)
+#     local vtxm,Hm,decompHm,vtxHm,i;
+#     if not MTX.IsIndecomposable(m) then
+#         Error("m is not indecomposable\n");
+#     fi;
+    
+#     vtxm:=VertexClass(G,m);
+#     if not vtxm in zG then
+#         Error("Vertex not in z\n"); # ? vertex = 1 のときに,このエラーが出るかも
+#     fi;
+#     Hm:=RestrictedGModule(G,H,m);
+#     decompHm:=MTX.Indecomposition(Hm);
+#     vtxHm:=List(decompHm,x->VertexClass(H,x[2]));
+#     for i in [1..Length(decompHm)] do
+#         if Representative(vtxHm[i]) in vtxm then #永尾津島p251補題4.1による。
+#             return [vtxHm[i],decompHm[i][2]];    
+#         fi;
+#     od;
+#     return fail;
+# end;)
+# InstallGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH",function(G,H,m,zH)
+#     local vtxm,Gm,decompGm,vtxGm,i;
+#     vtxm:=VertexClass(H,m);
+#     if  not vtxm in zH then
+#         Error("Vertex not in z\n");
+#     fi;
+#     Gm:=InducedGModule(G,H,m);
+#     decompGm:=MTX.Indecomposition(Gm);
+#     vtxGm:=List(decompGm,x->VertexClass(G,x[2]));
+#     for i in [1..Length(decompGm)] do
+#         if vtxm[1] in vtxGm[i] then
+#             return [vtxGm[i],decompGm[i][2]];    
+#         fi;
+#     od;
+#     return fail;
+# end;)
+# InstallGlobalFunction("GreenCorrespondence",function(args...)
+#     local gls,ltg,gtl, G, Q, H, p, primes;
+
+#     G := args[1];
+#     Q := args[2];
+#     H := args[3];
+#     primes := PrimeDivisors( Order(Q) );
+    
+#     if Size(primes) > 1 then 
+#         Error("<Q> is not p-group ------------------\n");
+#     elif Size(primes) = 0 then
+#         Error("<Q> = 1 ------------\n");
+#     fi;
+
+#     if Size(args) = 3 then 
+#         if Size(primes) = 1 then 
+#             p := primes[1];
+#         # else # case <Q> = 1
+
+#         #     # If <Q> = 1, then args[4] cannot be omitted.
+#         #     # Error("<Q> = 1 and <p> is not given. ----------------\n");
+
+#         fi;
+#     elif Size(args) = 4 then 
+#         p := args[4];
+#     else 
+#         Error("Size(args) wrong -----------------\n");
+#     fi;
+    
+#     gls:=GreenLocalSystem(G,Q,H,p);
+#     ltg:=function(m)
+#         return GreenCorrespondenceGlobalToLocalFixedzG(G, H, m, gls.z_conjLocal);
+#     end;
+#     gtl:=function(m)
+#         return GreenCorrespondenceGlobalToLocalFixedzG(G, H, m, gls.z_conjGlobal);
+#     end;
+
+#     return rec(LocalSystem:=gls,LocalToGlobal:=ltg,GlobalToLocal:=gtl);
+# end;)

@@ -34,7 +34,7 @@ _Somecontained:=function(G,Y,Z)
     return false;
 end;
 
-_GreenLocalSystem:=function(G,Q,H,p)
+GreenLocalSystem:=function(G,Q,H,p)
     local xG, yH, zG, zH, NGQ, QG, QH, elQG, fs,pccsubG, pccsubH;
     NGQ:=Normalizer(G,Q);
     if not IsSubgroup(H,NGQ) then
@@ -64,7 +64,7 @@ end;
 # pccsubH:=ModularConjClassSubGroups(h,2);
 # gls:=_GreenLocalSystem(g,Ps,h,2);
 
-_GreenCorrespondenceGlobalToLocalFixedzG:=function(G,H,m,zG)
+GreenCorrespondenceGlobalToLocalFixedzG:=function(G,H,m,zG)
     local vtxm,Hm,decompHm,vtxHm,i;
     vtxm:=VertexClass(G,m);
     if not vtxm in zG then
@@ -81,7 +81,7 @@ _GreenCorrespondenceGlobalToLocalFixedzG:=function(G,H,m,zG)
     return fail;
 end;
 
-_GreenCorrespondenceLocalToGlobalFixedzH:=function(G,H,m,zH)
+GreenCorrespondenceLocalToGlobalFixedzH:=function(G,H,m,zH)
     local vtxm,Gm,decompGm,vtxGm,i;
     vtxm:=VertexClass(H,m);
     if  not vtxm in zH then
@@ -103,12 +103,12 @@ end;
 # args[2] = Q,
 # args[3] = H,
 # (args[4] = p) 省略可
-_GreenCorrespondence:=function(args...)
-    local gls,ltg,gtl, G, Q, H, p, primes;
+GreenCorrespondence:=function(G,Q,H)
+    local gls,ltg,gtl, p, primes;
 
-    G := args[1];
-    Q := args[2];
-    H := args[3];
+    # G := args[1];
+    # Q := args[2];
+    # H := args[3];
     primes := PrimeDivisors( Order(Q) );
     
     if Size(primes) > 1 then 
@@ -117,7 +117,7 @@ _GreenCorrespondence:=function(args...)
         Error("<Q> = 1 ------------\n");
     fi;
 
-    if Size(args) = 3 then 
+    # if Size(args) = 3 then 
         if Size(primes) = 1 then 
             p := primes[1];
         # else # case <Q> = 1
@@ -126,36 +126,36 @@ _GreenCorrespondence:=function(args...)
         #     # Error("<Q> = 1 and <p> is not given. ----------------\n");
 
         fi;
-    elif Size(args) = 4 then 
-        p := args[4];
-    else 
-        Error("Size(args) wrong -----------------\n");
-    fi;
+    # elif Size(args) = 4 then 
+    #     p := args[4];
+    # else 
+    #     Error("Size(args) wrong -----------------\n");
+    # fi;
     
-    gls:=_GreenLocalSystem(G,Q,H,p);
+    gls:=GreenLocalSystem(G,Q,H,p);
     ltg:=function(m)
-        return _GreenCorrespondenceLocalToGlobalFixedzH(G, H, m, gls.z_conjLocal);
+        return GreenCorrespondenceLocalToGlobalFixedzH(G, H, m, gls.z_conjLocal);
     end;
     gtl:=function(m)
-        return _GreenCorrespondenceGlobalToLocalFixedzG(G, H, m, gls.z_conjGlobal);
+        return GreenCorrespondenceGlobalToLocalFixedzG(G, H, m, gls.z_conjGlobal);
     end;
 
     return rec(LocalSystem:=gls,LocalToGlobal:=ltg,GlobalToLocal:=gtl);
 end;
 #debug 
-# G:=AlternatingGroup(5);
-# p := 2;
-# Ps:=SylowSubgroup(G,p);
-# # Ps := TrivialSubgroup(G);
-# H:=Normalizer(G,Ps);
-# k:=GF(p^2);
-# irrkG:=IrreducibleGModules(G,k)[2];;
-# irrkH:=IrreducibleGModules(H,k)[2];;
-# f:=_GreenCorrespondence(G,Ps,H,p);
-# Print(f.LocalSystem);
-# f.GlobalToLocal(irrkG[1]);
-# f.LocalToGlobal(irrkH[1]);
-# FixedIrreduciblesRadicalLayerMultiplicities(f.LocalToGlobal(irrkH[1])[2],irrkG);
+G:=AlternatingGroup(5);
+p:=2;
+Ps:=SylowSubgroup(G,p);
+# Ps := TrivialSubgroup(G);
+H:=Normalizer(G,Ps);
+k:=GF(p^2);
+irrkG:=IrreducibleGModules(G,k)[2];;
+irrkH:=IrreducibleGModules(H,k)[2];;
+f:=GreenCorrespondence(G,Ps,H);
+Print(f.LocalSystem);
+f.GlobalToLocal(irrkG[1]);
+f.LocalToGlobal(irrkH[1]);
+FixedIrreduciblesRadicalLayerMultiplicities(f.LocalToGlobal(irrkH[1])[2],irrkG);
 
 # -------------------------------------
 # p:=7;
