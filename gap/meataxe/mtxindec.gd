@@ -16,8 +16,8 @@ DeclareGlobalFunction("GroupSetsContaining");
 
 DeclareGlobalFunction("GreenLocalSystem");
 
-# DeclareGlobalFunction("GreenCorrespondenceGlobalToLocalFixedzG");
+DeclareGlobalFunction("GreenCorrespondenceGlobalToLocalFixedzG");
 
-# DeclareGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH");
+DeclareGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH");
 
-# DeclareGlobalFunction("GreenCorrespondence");
+DeclareGlobalFunction("GreenCorrespondence");
