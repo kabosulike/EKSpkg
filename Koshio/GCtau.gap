@@ -155,22 +155,39 @@ f:=GreenCorrespondence(G,Ps,H);
 Print(f.LocalSystem);
 f.GlobalToLocal(irrkG[1]);
 f.LocalToGlobal(irrkH[1]);
+MTX.IsomorphismModules(last,irrkG[3]);
+
+
+
+MTX.IsIsomorphic;
+
+
 FixedIrreduciblesRadicalLayerMultiplicities(f.LocalToGlobal(irrkH[1])[2],irrkG);
 
 # -------------------------------------
-# p:=7;
-# G:=SL(2,p);
-# PG:=SylowSubgroup(G,p);
-# NGPG:=Normalizer(G,PG);
-# gls:=_GreenLocalSystem(G,PG,NGPG,p);
+LoadPackage("EKSPackage");;
+p:=5;;
+k:=GF(p);;
+G:=SL(2,p);;
+PG:=SylowSubgroup(G,p);;
+H:=Normalizer(G,PG);;
+irrkG:=IrreducibleGModules(G,k)[2];;
+irrkH:=IrreducibleGModules(H,k)[2];;
+f:=GreenCorrespondence(G,PG,H);;
+List(irrkG{[1..4]},x->MTX.IsIsomorphic(x,f.LocalToGlobal(f.GlobalToLocal(x)[2])[2]));
+List(irrkH,x->MTX.IsIsomorphic(x,f.GlobalToLocal(f.LocalToGlobal(x)[2])[2]));
+
+
+
+f.LocalToGlobal(f.GlobalToLocal(irrkG[3])[2])[2];
+# gls:=GreenLocalSystem(G,PG,NGPG,p);
 # H:=NGPG;
-# k:=GF(p);
-# irrkG:=IrreducibleGModules(G,k)[2];;
-# irrkH:=IrreducibleGModules(H,k)[2];;
-# f:=_GreenCorrespondence(G,PG,H,p);
-# Print(f.LocalSystem);
-# vertecesirrkG:=List(irrkG,x->VertexClass(G,x));
-# f.GlobalToLocal(irrkG[1]);
+MTX.IsIsomorphic;
+f.GlobalToLocal(irrkG[1]);
+Print(f.LocalSystem);
+vertecesirrkG:=List(irrkG,x->VertexClass(G,x));
+f.LocalToGlobal(irrkG[1]);
+FixedIrreduciblesRadicalLayerMultiplicities(last,irrkG);
 
 # <field>: finite field
 # <dim>: a dimention of a vector space V
