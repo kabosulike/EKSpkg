@@ -215,3 +215,97 @@ InstallGlobalFunction("IndecompositionOfGModuleAndVetexClasses", function(g, mod
         multiplicities := List(hc, x->Size(x.indices) )
     );
 end);
+
+# --------------------------------------------------------
+# Functions for "Green Correspondence"
+# 
+# <G>: a group
+# <Y>,<Z>: sets of subgroups of <G>
+InstallGlobalFunction("GroupSetsContaining",function(G,Y,Z)
+    local y,z;
+    for y in Y do
+        for z in Z do
+            if IsSubgroup(z,y)  then
+                return true;
+            fi;
+        od;
+    od;
+    return false;
+end);
+
+InstallGlobalFunction("GreenLocalSystem",function(G,Q,H,p)
+    local xG, yH, zG, zH, NGQ, QG, QH, elQG, fs,pccsubG, pccsubH;
+    NGQ:=Normalizer(G,Q);
+    if not IsSubgroup(H,NGQ) then
+        Error("LocalSub doesn't contain Normalizer.\n");
+    fi;
+    QG:=ConjugacyClassSubgroups(G,Q);
+    QH:=ConjugacyClassSubgroups(H,Q);
+    elQG:=Elements(QG);
+    fs:=Filtered(elQG,a->not RepresentativeAction(G,Q,a) in H);
+    xG:=Set(fs,i->AsSubgroup(G,Intersection(Q,i)));
+    yH:=Set(fs,i->AsSubgroup(H,Intersection(H,i)));
+    pccsubG:=ModularConjugacyClassesSubgroups(G,p);
+    pccsubH:=ModularConjugacyClassesSubgroups(H,p);
+
+    zG:=Filtered(pccsubG,i->not(GroupSetsContaining(G,Elements(i),xG)));
+    zH:=Filtered(pccsubH,i->not(GroupSetsContaining(H,Elements(i),yH)));
+    return rec(x:=xG,y:=yH,z_conjGlobal:=zG,z_conjLocal:=zH);
+end);
+
+InstallGlobalFunction("GreenCorrespondenceGlobalToLocalFixedzG",function(G,H,m,zG)
+    local vtxm,Hm,decompHm,vtxHm,i;
+    vtxm:=VertexClass(G,m);
+    if not vtxm in zG then
+        Error("Vertex not in z\n"); 
+    fi;
+    Hm:=RestrictedGModule(G,H,m);
+    decompHm:=MTX.Indecomposition(Hm);
+    vtxHm:=List(decompHm,x->VertexClass(H,x[2]));
+    for i in [1..Length(decompHm)] do
+        if Representative(vtxHm[i]) in vtxm then 
+            return [vtxHm[i],decompHm[i][2]];    
+        fi;
+    od;
+    return fail;
+end);
+
+InstallGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH",function(G,H,m,zH)
+    local vtxm,Gm,decompGm,vtxGm,i;
+    vtxm:=VertexClass(H,m);
+    if  not vtxm in zH then
+        Error("Vertex not in z\n");
+    fi;
+    Gm:=InducedGModule(G,H,m);
+    decompGm:=MTX.Indecomposition(Gm);
+    vtxGm:=List(decompGm,x->VertexClass(G,x[2]));
+    for i in [1..Length(decompGm)] do
+        if vtxm[1] in vtxGm[i] then
+            return [vtxGm[i],decompGm[i][2]];    
+        fi;
+    od;
+    return fail;
+end);
+
+InstallGlobalFunction("GreenCorrespondence",function(G,Q,H)
+    local gls,ltg,gtl, p, primes;
+    primes := PrimeDivisors( Order(Q) );
+    
+    if Size(primes) > 1 then 
+        Error("<Q> is not p-group ------------------\n");
+    elif Size(primes) = 0 then
+        Error("<Q> = 1 ------------\n");
+    fi;
+        if Size(primes) = 1 then 
+            p := primes[1];
+        fi;
+    gls:=GreenLocalSystem(G,Q,H,p);
+    ltg:=function(m)
+        return GreenCorrespondenceLocalToGlobalFixedzH(G, H, m, gls.z_conjLocal);
+    end;
+    gtl:=function(m)
+        return GreenCorrespondenceGlobalToLocalFixedzG(G, H, m, gls.z_conjGlobal);
+    end;
+
+    return rec(LocalSystem:=gls,LocalToGlobal:=ltg,GlobalToLocal:=gtl);
+end);

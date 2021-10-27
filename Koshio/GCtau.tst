@@ -13,7 +13,7 @@ gap> PIMskG:=PrincipalIndecomposableModules(decregkG,irrskG);;
 gap> irrskH:=IrreducibleGModules(H,k)[2];;
 gap> SortIrreducibleModulesTrivialModuleFirst(irrskH);;
 gap> PIMskH:=PrincipalIndecomposableModules(decregkH,irrskH);;
-gap> f:=_GreenCorrespondence(G,PG,H,p);;
+gap> f:=GreenCorrespondence(G,PG,H,p);;
 gap> GirrkG1:=f.GlobalToLocal(irrskG[1])[2];;
 gap> OkG:=MTX_SyzygyOfGModule(irrskG[1],PIMskG,irrskG);;
 gap> OkH:=MTX_SyzygyOfGModule(irrskH[1],PIMskH,irrskH);;
@@ -21,8 +21,6 @@ gap> GOkG:=f.GlobalToLocal(OkG)[2];;
 gap> OOkG:=MTX_SyzygyOfGModule(OkG,PIMskG,irrskG);;
 gap> OOkH:=MTX_SyzygyOfGModule(OkH,PIMskH,irrskH);;
 gap> GOOkG:=f.GlobalToLocal(OOkG)[2];;
-
-#
 gap> MTX.IsIsomorphicGModules(GirrkG1,irrskH[1]);
 true
 gap> MTX.IsIsomorphicGModules(GOkG,OkH);

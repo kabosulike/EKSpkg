@@ -20,3 +20,13 @@ gap> SpritVactorIntoMatrix(2,5,v)=jMats;
 true
 gap> Length(AlternativeBasisModuleHomomorphisms(regkG,tG))=1;
 true
+gap> Length(AlternativeBasisModuleHomomorphisms(regkG,tG))=1;
+true
+gap> Length(AlternativeBasisModuleHomomorphisms(regkG,tG))=1;
+true
+gap> Length(AlternativeBasisModuleHomomorphisms(regkG,tG))=1;
+true
+gap> Length(AlternativeBasisModuleHomomorphisms(regkG,tG))=1;
+true
+gap> Length(AlternativeBasisModuleHomomorphisms(regkG,tG))=1;
+true
