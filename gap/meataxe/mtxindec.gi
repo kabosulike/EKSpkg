@@ -255,24 +255,20 @@ end);
 
 InstallGlobalFunction("GreenCorrespondenceGlobalToLocalFixedzG",function(G,H,m,zG)
     local vtxm,Hm,decompHm,vtxHm,i;
-    if not MTX.IsIndecomposable(m) then
-        Error("m is not indecomposable\n");
-    fi;
-    
     vtxm:=VertexClass(G,m);
     if not vtxm in zG then
-        Error("Vertex not in z\n"); # ? vertex = 1 のときに,このエラーが出るかも
+        Error("Vertex not in z\n"); 
     fi;
     Hm:=RestrictedGModule(G,H,m);
     decompHm:=MTX.Indecomposition(Hm);
     vtxHm:=List(decompHm,x->VertexClass(H,x[2]));
     for i in [1..Length(decompHm)] do
-        if Representative(vtxHm[i]) in vtxm then #永尾津島p251補題4.1による。
+        if Representative(vtxHm[i]) in vtxm then 
             return [vtxHm[i],decompHm[i][2]];    
         fi;
     od;
     return fail;
-end;)
+end);
 
 InstallGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH",function(G,H,m,zH)
     local vtxm,Gm,decompGm,vtxGm,i;
@@ -289,14 +285,10 @@ InstallGlobalFunction("GreenCorrespondenceLocalToGlobalFixedzH",function(G,H,m,z
         fi;
     od;
     return fail;
-end;)
+end);
 
 InstallGlobalFunction("GreenCorrespondence",function(G,Q,H)
     local gls,ltg,gtl, p, primes;
-
-    # G := args[1];
-    # Q := args[2];
-    # H := args[3];
     primes := PrimeDivisors( Order(Q) );
     
     if Size(primes) > 1 then 
@@ -304,22 +296,9 @@ InstallGlobalFunction("GreenCorrespondence",function(G,Q,H)
     elif Size(primes) = 0 then
         Error("<Q> = 1 ------------\n");
     fi;
-
-    # if Size(args) = 3 then 
         if Size(primes) = 1 then 
             p := primes[1];
-        # else # case <Q> = 1
-
-        #     # If <Q> = 1, then args[4] cannot be omitted.
-        #     # Error("<Q> = 1 and <p> is not given. ----------------\n");
-
         fi;
-    # elif Size(args) = 4 then 
-    #     p := args[4];
-    # else 
-    #     Error("Size(args) wrong -----------------\n");
-    # fi;
-    
     gls:=GreenLocalSystem(G,Q,H,p);
     ltg:=function(m)
         return GreenCorrespondenceLocalToGlobalFixedzH(G, H, m, gls.z_conjLocal);
@@ -329,4 +308,4 @@ InstallGlobalFunction("GreenCorrespondence",function(G,Q,H)
     end;
 
     return rec(LocalSystem:=gls,LocalToGlobal:=ltg,GlobalToLocal:=gtl);
-end;)
+end);

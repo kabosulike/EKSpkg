@@ -54,15 +54,15 @@ GreenLocalSystem:=function(G,Q,H,p)
     return rec(x_conjGlobal:=xG,y_conjLocal:=yH,z_conjGlobal:=zG,z_conjLocal:=zH);
 end;
 # #debug 
-# g:=SymmetricGroup(5);
-# Ps:=SylowSubgroup(g,2);
-# NgPs:=Normalizer(g,Ps);
-# h:=SymmetricGroup(4);
-# IsSubgroup(g,h);
-# IsSubgroup(h,NgPs);
-# pccsubG:=ModularConjClassSubGroups(g,2);
-# pccsubH:=ModularConjClassSubGroups(h,2);
-# gls:=_GreenLocalSystem(g,Ps,h,2);
+g:=SymmetricGroup(5);
+Ps:=SylowSubgroup(g,2);
+NgPs:=Normalizer(g,Ps);
+h:=SymmetricGroup(4);
+IsSubgroup(g,h);
+IsSubgroup(h,NgPs);
+pccsubG:=ModularConjClassSubGroups(g,2);
+pccsubH:=ModularConjClassSubGroups(h,2);
+gls:=GreenLocalSystem(g,Ps,h,2);
 
 GreenCorrespondenceGlobalToLocalFixedzG:=function(G,H,m,zG)
     local vtxm,Hm,decompHm,vtxHm,i;
@@ -81,7 +81,7 @@ GreenCorrespondenceGlobalToLocalFixedzG:=function(G,H,m,zG)
     return fail;
 end;
 
-GreenCorrespondenceLocalToGlobalFixedzH:=function(G,H,m,zH)
+_GreenCorrespondenceLocalToGlobalFixedzH:=function(G,H,m,zH)
     local vtxm,Gm,decompGm,vtxGm,i;
     vtxm:=VertexClass(H,m);
     if  not vtxm in zH then
