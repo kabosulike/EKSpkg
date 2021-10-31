@@ -1,5 +1,6 @@
 gap> p:=5;;
 gap> k:=GF(p);;
+gap> G:=SL(2,p);;
 gap> PG:=SylowSubgroup(G,p);;
 gap> H:=Normalizer(G,PG);;
 gap> irrkG:=IrreducibleGModules(G,k)[2];;
