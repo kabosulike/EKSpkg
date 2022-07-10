@@ -6,7 +6,7 @@
 #   list of elements decomoposition of <e> w.r.t. indecomposable decomposition of the gmodule
 #   indecomposition of the gmodule above
 # ]
-InstallGlobalFunction(ElementDecompositionByIndecomposition, function(bg, e)
+InstallGlobalFunction("ElementDecompositionByIndecomposition", function(bg, e)
     local ElementIndecomposition, b, m, decomp, idemps;
 
     # Let M be a module over a group ring KG
@@ -53,7 +53,7 @@ end );
 #       basis: <kg>の基底
 #       gmodule: basisに関する<kg>のregular gmodule
 #       indecomposition: gmoduleをindecompositionした結果
-InstallGlobalFunction(BlockDecomposition, function(kg)
+InstallGlobalFunction("BlockDecomposition", function(kg)
     local g, bg, decomp;
     g:= UnderlyingMagma(kg);
     bg:= GBimoduleByRegularAction(g, g, kg, kg);
@@ -70,7 +70,7 @@ end );
 #       basis: <kh>の基底
 #       gmodule: basisに関する<kh>のregular gmodule
 #       indecomposition: gmoduleをindecompositionした結果
-InstallGlobalFunction(BlockDecompositionInSubgroupRing, function(kh, h)
+InstallGlobalFunction("BlockDecompositionInSubgroupRing", function(kh, h)
     local kg, bg, decomp;
     kg:= TopParent(kh);
     bg:= GBimoduleByRegularAction(h, h, kh, kg);
@@ -86,7 +86,7 @@ end );
 #       basis: <e>*<kg>の基底
 #       gmodule: basisに関する<e>*<kg>のkg-gmodule
 #       indecomposition: gmoduleをindecompositionした結果
-InstallGlobalFunction(PrimitiveDecomposition, function(e, kg)
+InstallGlobalFunction("PrimitiveDecomposition", function(e, kg)
     local g, bg, decomp;
     g:= UnderlyingMagma(kg);
     bg:= GBimoduleByRegularAction(TrivialSubgroup(g), g, e*kg, kg);
@@ -104,7 +104,7 @@ end );
 #       basis: <e>*<kh>の基底
 #       gmodule: basisに関する<e>*<kh>の<kh>-gmodule
 #       indecomposition: gmoduleをindecompositionした結果
-InstallGlobalFunction(PrimitiveDecompositionInSubgroupRing, function(e, kh, h)
+InstallGlobalFunction("PrimitiveDecompositionInSubgroupRing", function(e, kh, h)
     local kg, bg, decomp;
     kg:= TopParent(kh);
     bg:= GBimoduleByRegularAction(TrivialSubgroup(h), h, e*kh, kg);
@@ -119,7 +119,7 @@ end );
 #       basis: <kg>の基底
 #       gmodule: basisに関する<kg>のregular gmodule
 #       indecomposition: gmoduleをindecompositionした結果
-InstallGlobalFunction(PrimitiveDecompositionOfOne, function(kg)
+InstallGlobalFunction("PrimitiveDecompositionOfOne", function(kg)
     return PrimitiveDecomposition(One(kg), kg);
 end );
 
@@ -132,7 +132,7 @@ end );
 #       basis: <kh>の基底
 #       gmodule: basisに関する<kh>のregular gmodule
 #       indecomposition: gmoduleをindecompositionした結果
-InstallGlobalFunction(PrimitiveDecompositionOfOneInSubgroupRing, function(kh, h)
+InstallGlobalFunction("PrimitiveDecompositionOfOneInSubgroupRing", function(kh, h)
     return PrimitiveDecompositionInSubgroupRing(One(kh), kh, h);
 end );
 
@@ -145,7 +145,7 @@ end );
 #       gmodule: basisに関する<e>*<kg>のk[<h>×g]-gmodule
 #       indecomposition: gmoduleをindecompositionした結果
 #       classification : indecomposition の index list を，iso で類別したもの
-InstallGlobalFunction(PrimitiveDecompositionInFixedElementsSubalgebra, function(e, h, kg)
+InstallGlobalFunction("PrimitiveDecompositionInFixedElementsSubalgebra", function(e, h, kg)
     local g, bg, decomp, eqRel, classes;
     g:= UnderlyingMagma(kg);
     bg:= GBimoduleByRegularAction(h, g, e*kg, kg);
@@ -167,7 +167,7 @@ end );
 #           (For example, pd := PrimitiveDecompositionInFixedElementsSubalgebra(e, h, kg); )
 # Return
 #   classification indices determined by isomorphic MTX-modules of <pd>.indecomposition
-InstallGlobalFunction( IsomorphicClassification , function( pd )
+InstallGlobalFunction("IsomorphicClassification" , function( pd )
     local 
         IsIso, classes,
         localReps, nonLocalReps,c, cap;
