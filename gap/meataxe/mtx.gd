@@ -1,5 +1,7 @@
 DeclareGlobalFunction("MutableCopyGModule");
 
+DeclareGlobalFunction("MinimalCopyGModule");
+
 DeclareGlobalFunction("CheckMTXModule");
 
 DeclareGlobalFunction("IsMTXModule");
@@ -15,6 +17,8 @@ DeclareSynonym("ZeroModule", ZeroGModule);
 DeclareGlobalFunction("TrivialGModuleNonEmptyGenerators");
 
 DeclareGlobalFunction("IsTrivialGModule");
+
+DeclareGlobalFunction("SortModules");
 
 DeclareGlobalFunction("ChangeRightLeftGenerators");
 

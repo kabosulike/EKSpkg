@@ -81,38 +81,43 @@ end);
 #   の様な項目を追加する．
 InstallGlobalFunction("IrreducibleNamesByDimension", function(irrs)
     local nextDim, irrNames, j, i, irr, irrName, alp;
-    
-    Sort(irrs, function(s,t) return s.dimension <= t.dimension; end);
+	
+	irrs := SortModules(irrs);
 
-    nextDim := 0;
-    irrNames := [];
-    j := 0;
-    for i in [1..Size(irrs)] do 
-        if i < Size(irrs) then 
-            nextDim := irrs[i+1].dimension;
-        else
-            nextDim := irrs[i].dimension + 1; # 形式的に決めたもの
-        fi;
+	nextDim := 0;
+	irrNames := [];
+	j := 0;
+	for i in [1..Size(irrs)] do
+		if IsTrivialGModule(irrs[i]) then 
+			Add(irrNames, "k");
+			continue;
+		fi;
 
-        irr := irrs[i];
-        irrName := String(irr.dimension);
+		if i < Size(irrs) then 
+			nextDim := irrs[i+1].dimension;
+		else
+			nextDim := irrs[i].dimension + 1; # 形式的に決めたもの
+		fi;
 
-        alp := "";
-        if irr.dimension = nextDim then 
-            alp := [ CharInt( IntChar('a') + j ) ];
-            j := j + 1;
-        else
-            if j > 0 then 
-                alp := [ CharInt( IntChar('a') + j ) ];
-            fi;
-            j := 0;
-        fi;
-        irrName := Concatenation( "S" , irrName , alp ); # remark: char is not string.
+		irr := irrs[i];
+		irrName := String(irr.dimension);
 
-        Add(irrNames, irrName);
-    od;
+		alp := "";
+		if irr.dimension = nextDim then 
+			alp := [ CharInt( IntChar('a') + j ) ];
+			j := j + 1;
+		else
+			if j > 0 then 
+				alp := [ CharInt( IntChar('a') + j ) ];
+			fi;
+			j := 0;
+		fi;
+		irrName := Concatenation( "S" , irrName , alp ); # remark: char is not string.
 
-    return irrNames;
+		Add(irrNames, irrName);
+	od;
+
+	return irrNames;
 end);
 
 

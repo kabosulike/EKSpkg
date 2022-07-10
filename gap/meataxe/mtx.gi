@@ -9,6 +9,23 @@ InstallGlobalFunction("MutableCopyGModule", function( m )
     return copy;
 end);
 
+# Arg : a MTX-module <mo>
+# Return : minimal copy <co> of <mo>
+# 使用例
+#	log file に出力するとき，~ のせいで recursion error が出る場合の対処．
+#	MinimalCopyGModule で，余計な成分を消す．
+InstallGlobalFunction("MinimalCopyGModule", function(mo)
+	local z,co,i;
+	
+	z := GModuleByMats([],0,mo.field);
+	co := rec();
+	for i in RecNames(z) do if IsBound(mo.(i)) then
+		co.(i) := mo.(i);
+	fi; od;
+
+	return co;
+end);
+
 
 InstallGlobalFunction("CheckMTXModule", function(module)
 
@@ -96,6 +113,46 @@ InstallGlobalFunction("IsTrivialGModule", function(module)
     local k;
     k := module.field;
     return module.dimension = 1 and ForAll( module.generators , x -> x[1][1] = One(k) );
+end);
+
+# 
+	# Arg :v: list of modules
+	# Return : a sorted modules list <ans> 
+	# Reamrk : v is nondestructive ?
+	# trivial module あれば先頭
+	# それ以外の modules は，次元の小さい順
+InstallGlobalFunction("SortModules", function(v)
+	local v2, t, f, ans, i;
+	
+	v2 := [];
+	f := false;
+
+	for i in v do
+		if IsTrivialGModule(i) then 
+			t := i;
+			f := true;
+		else 
+			Add(v2, i);
+		fi;
+	od;
+
+	Sort(v2, function(x,y)
+		return x.dimension < y.dimension;
+	end);
+
+	ans := [];
+	if f then 
+		Assert(0, IsTrivialGModule(t),"::::::::::::::::");
+		Add(ans, t); # t : trivial module
+	fi;
+	Assert(0, Size(ans) <= 1);
+	
+	for i in v2 do
+		Assert(0, not IsTrivialGModule(i), "***************");
+		Add(ans, i);
+	od;
+
+	return ans;
 end);
 
 
