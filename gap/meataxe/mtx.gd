@@ -2,6 +2,10 @@ DeclareGlobalFunction("MutableCopyGModule");
 
 DeclareGlobalFunction("MinimalCopyGModule");
 
+DeclareGlobalFunction("RemoveBadComponents");
+
+DeclareGlobalFunction("RecursionRemoveBadComponents");
+
 DeclareGlobalFunction("CheckMTXModule");
 
 DeclareGlobalFunction("IsMTXModule");

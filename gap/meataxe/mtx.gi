@@ -9,22 +9,91 @@ InstallGlobalFunction("MutableCopyGModule", function( m )
     return copy;
 end);
 
-# Arg : a MTX-module <mo>
-# Return : minimal copy <co> of <mo>
-# 使用例
-#	log file に出力するとき，~ のせいで recursion error が出る場合の対処．
-#	MinimalCopyGModule で，余計な成分を消す．
+#
+	# Arg : a MTX-module <mo>
+	# Return : 余計な成分を消した <mo> のコピー <co> を返す．
+	# 使用例
+	#	log file に出力するときの error の対処．
+	#		~ のせいで recursion error が出る場合
+	#		characteristicPolynomial のせいで x_1 などが入る場合
+	#
+	# 次の順番で実行すると，安全度が増す．
+	#  MinimalCopyGModule(mo);
+	#  RecursionRemoveBadComponents(mo);
 InstallGlobalFunction("MinimalCopyGModule", function(mo)
-	local z,co,i;
+	local z,co,i,rn;
 	
-	z := GModuleByMats([],0,mo.field);
+	# z := GModuleByMats([],0,mo.field); # .smashMeataxe := rec( isZeroGens := true ) が入る
+	# rn := RecNames(z);
+
+	rn := [
+		"IsOverFiniteField",
+		"dimension",
+		"field",
+		"generators",
+		"isMTXModule"
+	];
 	co := rec();
-	for i in RecNames(z) do if IsBound(mo.(i)) then
+	for i in rn do if IsBound(mo.(i)) then
 		co.(i) := mo.(i);
 	fi; od;
 
 	return co;
 end);
+
+#
+	#	log file に出力するときの error の対処．
+	#		~ のせいで recursion error が出る場合
+	#		characteristicPolynomial のせいで x_1 などが入る場合
+InstallGlobalFunction("RemoveBadComponents", function(re)
+	local bad, i;
+
+	if not IsRecord(re) then return; fi;
+	
+	bad := [
+		# "smashMeataxe", # 以下の bad components を含むことがある
+		"characteristicPolynomial", # x_1 などが入ることがある
+		"indecomposition" # ~ が入ることがある
+	];
+	for i in RecNames(re) do
+		if i in bad then 
+			if IsMutable(re) then
+				Unbind(re.(i)); 
+			else 
+				return fail;
+			fi;
+		fi;
+	od;
+	return true;
+end);
+
+#
+	# list, record に対して，再帰的に RemoveBadComponents を行う．
+	# DFS と同じ．
+	#
+	# 次の順番で実行すると，安全度が増す．
+	#  MinimalCopyGModule(mo);
+	#  RecursionRemoveBadComponents(mo);
+InstallGlobalFunction("RecursionRemoveBadComponents", function(r)
+	local i;
+
+	if not (IsList(r) or IsRecord(r)) then return ; fi;
+	
+	if IsList(r) then 
+		for i in r do
+			RecursionRemoveBadComponents(i);
+		od;
+	fi;
+
+	if IsRecord(r) then 
+		RemoveBadComponents(r);
+		for i in RecNames(r) do
+			RecursionRemoveBadComponents(r.(i));
+		od;
+	fi;
+	
+end);
+
 
 
 InstallGlobalFunction("CheckMTXModule", function(module)
