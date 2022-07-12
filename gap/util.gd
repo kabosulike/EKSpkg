@@ -1,3 +1,5 @@
+DeclareGlobalFunction("InversePermutation");
+
 DeclareGlobalFunction("SortRecord");
 
 DeclareGlobalFunction("CheckSameFields");

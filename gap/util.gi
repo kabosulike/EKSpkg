@@ -1,14 +1,30 @@
+# Arg : <pe> is a permutation list 
+#		(i.e.  a rearrangement of 1,2,...,n )
+# Return : the inverse permutation of <pe>		
+InstallGlobalFunction("InversePermutation", function(pe)
+	local inv, n, i;
+	
+	n := Size(pe);
+	inv := List([1..n], i-> -1);
+
+	for i in [1..n] do
+		inv[pe[i]] := i;
+	od;
+	return inv;
+end);
+
+
 # Args 
-#   <record> : record
+#   <re> : record
 #   <perm> : permutation list 
-# Return void
-#   a record which components sorted by <perm>
-InstallGlobalFunction("SortRecord",function(record, perm)
+# Return a sorted record <re>
+#   a record <re> which components sorted by <perm>
+InstallGlobalFunction("SortRecord",function(re, perm)
     local x;
     
-    for x in RecNames( record ) do
-        if IsList(record.(x)) and (not IsMatrix(record.(x))) then
-            record.(x) := record.(x){perm};
+    for x in RecNames( re ) do
+        if IsList(re.(x)) and (not IsMatrix(re.(x))) then
+            re.(x) := re.(x){perm};
         fi;
     od;
 end);
