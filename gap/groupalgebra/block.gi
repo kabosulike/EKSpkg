@@ -232,83 +232,81 @@ InstallGlobalFunction("BlockIdempotentsOfGroupAlgebraSumOfPims", function(kg)
 end);
 
 
-# <blocks> : block idem list
-# <blocks> sort a list s.t. blocks[1] =  principal block
-InstallGlobalFunction("SortPrincipalBlockFirst", function(blocks,kg)
-    Sort( blocks , function(b,c)
-        if IsPrincipalBlockIdempotent(b,kg) then 
-            return true;
-        else 
-            return false;
-        fi;
-    end);
+
+# 
+	# args = [ "v", "kg"(, "de" )]
+	# 	v: list of block idempotents
+	#	kg : group algebra
+	# 	de : list of defect groups corresponding <v>
+	# Return : a sort permutation list <pe> of <v>
+	#	Where, v{pe} and de{pe} are sorted lists	
+	# Reamrk : 
+	#	<v>, <de> is nondestructive
+InstallGlobalFunction("PermutationOfSortBlockIdempotents", function(args...)
+	local v, kg, de, v2 , pe, t, f, i, rel, n, co_d, sz;
+
+	# args >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		sz := Size(args);
+		if sz in [2,3] then 
+			v := args[1];
+			kg := args[2];
+			n := Size(v);
+			
+			if sz = 2 then 
+				de := List([1..n], i->[0,0]);
+			elif sz = 3 then 
+				de := args[3];
+			fi;
+		else 
+			Error("Size(args) is wrong -----------------------------------\n");
+		fi;
+		Assert(0, Size(v) = Size(de));
+	# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+	
+	if IsGroup(de[1]) then
+		co_d := List(de, i->IdSmallGroup(i)); # IdSmallGroup(i) : pair 
+	fi;
+
+	pe := [1..n];
+	rel := function(i, j) return co_d[i] > co_d[j]; end; # pair として sort する
+	Sort(pe, rel);
+
+	v2 := [];
+	f := false; # exist principal block
+	for i in pe do
+		if (not f) and IsPrincipalBlockIdempotent(v[i], kg) then 
+			t := i;
+			f := true;
+		else 
+			Add(v2, i);
+		fi;
+	od;
+
+	pe := [];
+	if f then Add(pe, t); fi; # t : principal block
+	for i in v2 do Add(pe, i); od;
+
+	return pe; # not inverse
+end);
+	
+
+# 
+	# Args :
+	#	<bld> : a record of block decomposition with recnames 
+	# 			["idempotents"(, "defectGroups")]
+	# 	<kg>  : group algebra
+InstallGlobalFunction("SortBlockDecomposition", function(bld, kg)
+	local v,de,pe;
+	
+	v := bld.idempotents;
+	if IsBound(bld.defectGroups) then 
+		de := bld.defectGroups;
+		pe := PermutationOfSortBlockIdempotents(v, kg, de);
+	else 
+		pe := PermutationOfSortBlockIdempotents(v, kg);
+	fi;
+
+	SortRecord(bld, pe);# not inverse
 end);
 
-
-# <record> : a record (rec(idempotents, indecomposition))
-# <kg> : parent group algebra
-# Return 
-#   sorted record
-InstallGlobalFunction("SortBlockIdempotentsAndModulesFormPrincipalBlockFirst", function( record , kg )
-    local rel, idems, dec, perm;
-    
-    # <b>, <c> : block idempotents
-    rel := function( b, c ) # relation
-        if IsPrincipalBlockIdempotent(b,kg) then 
-            return true;
-        # else if IsPrincipalBlockIdempotent(c,kg) then
-        #     return false;
-        else 
-            return false;
-        fi;
-    end;
-    
-    idems := record.idempotents;
-    dec   := record.indecomposition;
-    perm := PermutationOfSortFunction( idems , rel );
-
-    SortRecord( record, perm );
-    return record;
-end);
-
-
-# ---------------------------------------------------
-    # Args
-    #   <record> : a record (rec(idempotents, indecomposition)) 
-    #   <kg> : parent group algebra
-    # Return void.
-    # 
-    #   block idempotents を，
-    #       (i)  principal block が先頭 
-    #       (ii) その他のブロックは defect group の order が大きい順
-    #   に sort 
-InstallGlobalFunction("SortBlockIdempotentsModulesDefectGroupsFormPrincipalBlockFirstDefectNumber", function( record , kg )
-    local rel, idems, dec, perm, defs, list;
-
-    # <b>, <c> : lists [ block idempotent, defect group ]
-    rel := function( b, c ) # relation
-        local idemb, defb, idemc, defc;
-        idemb := b[1]; defb := b[2]; # idempotent, defect group
-        idemc := c[1]; defc := c[2];
-        if IsPrincipalBlockIdempotent(idemb,kg) then 
-            return true;
-        else
-            return Order(defb) >= Order(defc);
-        fi;
-    end;
-    
-    # calc defects <defs> and add in <record>
-    if not IsBound(record.defectGroups) then 
-        idems := record.idempotents;
-        defs  := List( idems , b -> DefectGroupOfBlockOfGroupAlgebra( b, kg ) );
-        record.defectGroups := defs;
-    fi;
-
-    # sort
-    list := List([1..Size(idems)], i -> [ idems[i], defs[i] ] ); # list of [ block idem, defect group ]
-    perm := PermutationOfSortFunction( list , rel );
-    SortRecord( record, perm );
-    
-    return ;
-
-end);

@@ -22,9 +22,6 @@ DeclareGlobalFunction("BlockIdempotentsOfGroupAlgebraWithModules");
 
 DeclareGlobalFunction("BlockIdempotentsOfGroupAlgebraSumOfPims");
 
-DeclareGlobalFunction("SortPrincipalBlockFirst");
+DeclareGlobalFunction("PermutationOfSortBlockIdempotents");
 
-DeclareGlobalFunction("SortBlockIdempotentsAndModulesFormPrincipalBlockFirst");
-
-DeclareGlobalFunction("SortBlockIdempotentsModulesDefectGroupsFormPrincipalBlockFirstDefectNumber");
-
+DeclareGlobalFunction("SortBlockDecomposition");
