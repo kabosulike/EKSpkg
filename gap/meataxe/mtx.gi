@@ -43,8 +43,8 @@ end);
 
 #
 	#	log file に出力するときの error の対処．
-	#		~ のせいで recursion error が出る場合
 	#		characteristicPolynomial のせいで x_1 などが入る場合
+	#		~ のせいで recursion error が出る場合
 InstallGlobalFunction("RemoveBadComponents", function(re)
 	local bad, i;
 
@@ -53,6 +53,7 @@ InstallGlobalFunction("RemoveBadComponents", function(re)
 	bad := [
 		# "smashMeataxe", # 以下の bad components を含むことがある
 		"characteristicPolynomial", # x_1 などが入ることがある
+		"charpolFactors", # x_1 などが入ることがある
 		"indecomposition" # ~ が入ることがある
 	];
 	for i in RecNames(re) do
