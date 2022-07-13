@@ -128,7 +128,7 @@ InstallGlobalFunction("AllIndecomposableGModulesFixedVertexSourcePair", function
         #   smd.source := src;# immutable
 
         # add record
-        br := BrauerMorphismOfEndRing(g,q,smd2);
+        # br := BrauerMorphismOfEndRing(g,q,smd2);
         if q in VertexClass( g, smd2 ) then
         # i.e. if not IsZeroDimensionOfImage(br) then 
             # smd2.vertexClass := q^g; # mutable
