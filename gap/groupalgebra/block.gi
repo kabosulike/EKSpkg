@@ -258,7 +258,7 @@ InstallGlobalFunction("PermutationOfSortBlockIdempotents", function(args...)
 				de := args[3];
 			fi;
 		else 
-			Error("Size(args) is wrong -----------------------------------\n");
+			Error("wrong number of arguments -----------------------------------\n");
 		fi;
 		Assert(0, Size(v) = Size(de));
 	# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

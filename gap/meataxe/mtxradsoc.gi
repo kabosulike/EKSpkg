@@ -113,7 +113,7 @@ InstallGlobalFunction("RadicalLayersIrreduciblesName", function(args...)
             Error("args[2] is not (group or list of irreducible modules.)--------\n");
         fi;
     else 
-        Error("Wrong Size(args) --------------\n");
+        Error("wrong number of arguments  --------------\n");
     fi;
 
     if not IsBoundComponentName( irrs[1] ) then 

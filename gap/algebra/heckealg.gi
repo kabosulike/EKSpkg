@@ -15,7 +15,7 @@ InstallGlobalFunction("IdempotentHeckeSubspace", function(args...)
     local a, e, f;
 
     if not Size(args) in [2,3] then
-        Error( "Wrong Size(<args>)--------------------------\n");
+        Error( "wrong number of arguments --------------------------\n");
     fi;
     
     a := args[1];

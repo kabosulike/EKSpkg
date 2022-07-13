@@ -53,7 +53,7 @@ InstallGlobalFunction("PrintList", function(args...)
     elif Size(args) = 2 then 
         _PrintList(args[1], args[2]);
     else 
-        Error("Wrong size of <args> ---------------------------\n");
+        Error("wrong number of arguments ---------------------------\n");
     fi;
 end);
 

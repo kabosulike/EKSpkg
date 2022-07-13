@@ -129,7 +129,7 @@ GreenCorrespondence:=function(G,Q,H)
     # elif Size(args) = 4 then 
     #     p := args[4];
     # else 
-    #     Error("Size(args) wrong -----------------\n");
+    #     Error("wrong number of arguments -----------------\n");
     # fi;
     
     gls:=GreenLocalSystem(G,Q,H,p);

@@ -33,7 +33,7 @@
 		
 		# args >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 			if not Size(args) in [2] then
-				Error( "Size(<args>) is wrong. \n");
+				Error( "wrong number of arguments -------------------\n");
 			fi;
 
 			if Size(args) = 2 then

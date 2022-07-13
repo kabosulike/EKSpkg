@@ -152,7 +152,7 @@ InstallGlobalFunction("RestrictedGModuleByHomomorphism", function(args...)
         fi;
 
     else     
-        Error("Wrong Size of <args> -------------------\n");
+        Error("wrong number of arguments -------------------\n");
     fi;
     return RestrictedGModuleByHomomorphism@( module, phi, rep );
 end);

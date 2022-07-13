@@ -159,7 +159,7 @@ InstallGlobalFunction("SourceIdempotentDecomposition", function(args...)
             kg := args[3];
         fi;
     else 
-        Error("Wrong size of args --------------\n");
+        Error("wrong number of arguments --------------\n");
     fi;
 
     # if IsConjugacyClassGroupRep(d) then # d = d0^g ( some defect group d0 )

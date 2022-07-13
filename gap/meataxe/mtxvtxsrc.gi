@@ -20,7 +20,7 @@ InstallGlobalFunction("BrauerMorphismOfEndRing", function(args...)
         m := args[2];
         g := h;
     else
-        Error( "Wrong Size(args)--------------------------\n");
+        Error( "wrong number of arguments --------------------------\n");
     fi;
     
 

@@ -211,7 +211,7 @@ InstallGlobalFunction("KernelOfLinearMapByMatrix", function( args... )
 
     # args >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         if not Size(args) in [1,3] then
-            Error( "Wrong Size(<args>)--------------------------\n");
+            Error( "wrong number of arguments --------------------------\n");
         fi;
     
         if Size(args) = 2 then

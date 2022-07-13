@@ -17,7 +17,7 @@ InstallGlobalFunction("IdempotentHeckeGroupRingModule", function( args... )
         ekge, module, e, h, kg;
 
     if not Size(args) in [5,4] then
-        Error( "Wrong Size(args)--------------------------\n");
+        Error( "wrong number of arguments --------------------------\n");
     fi;
     
     module := args[1];
@@ -154,7 +154,7 @@ InstallGlobalFunction("RestrictedLeftModule", function( a, h, lMod, t )
         # # If <t> is not given, then <t> is TransposedMat.
         # 
         # if not Size(args) in [4,3] then
-        #     Error( "Wrong Size(<args>)--------------------------\n");
+        #     Error( "wrong number of arguments --------------------------\n");
         # fi;
         
         # args[1] := a;

@@ -139,7 +139,7 @@ InstallGlobalFunction("ClassificationToEquivalenceRelation",function(args...)
         classes := args[1];
         eqRel := function(x,y) return x = y; end;
     else 
-        Error("Wrong size of <args> ---------------------\n");
+        Error("wrong number of arguments ---------------------\n");
     fi;
 
     return _ClassificationToEquivalenceRelation(classes, eqRel);

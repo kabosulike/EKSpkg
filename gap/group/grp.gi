@@ -34,7 +34,7 @@ InstallGlobalFunction("DiagonalSubgroup", function( args... )
 
     # args >>>>>>>>>>>>>>>>
         if not Size(args) in [3,5] then 
-            Error( "Wrong Size(args) --------------------------\n");
+            Error( "wrong number of arguments  --------------------------\n");
         fi;
 
         g1 := args[1];
@@ -76,7 +76,7 @@ InstallGlobalFunction("DirectProductSubgroup", function( args... )
 
     # args >>>>>>>>>>>>>>>>
         if not Size(args) in [4,6] then 
-            Error( "Wrong Size(args) --------------------------\n");
+            Error( "wrong number of arguments  --------------------------\n");
         fi;
 
         g1 := args[1];

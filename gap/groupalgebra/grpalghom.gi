@@ -15,7 +15,7 @@ InstallGlobalFunction("BrauerMorphismOfGroupAlgebra", function(args...)
         p := args[2];
         kg := args[3];
     else  
-        Error( "Wrong Size(args)--------------------------\n");
+        Error( "wrong number of arguments --------------------------\n");
     fi;
     
     # Parent algebra and its embedding

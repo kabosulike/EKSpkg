@@ -97,7 +97,7 @@ InstallGlobalFunction("IsPermutationMatrix", function( args... )
     elif Size(args) = 2  then
         ring := args[2];
     else
-        Error( "Wrong Size(args)--------------------------\n");
+        Error( "wrong number of arguments --------------------------\n");
     fi;
 
 

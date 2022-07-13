@@ -70,7 +70,7 @@ InstallGlobalFunction("ProjectiveCoverOfGModule", function( args... )
 
     # args >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         if not Size(args) in [2,3] then
-            Error( "Wrong Size(<args>)--------------------------\n");
+            Error( "wrong number of arguments --------------------------\n");
         fi;
     
         module := args[1];
