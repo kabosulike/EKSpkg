@@ -164,14 +164,3 @@ InstallGlobalFunction("IrreducibleGModules", function(args...)
 end);
 
 
-# <irrs> : irreducible modules
-# Sort <irrs> s.t. irrs[1] = trivial module
-InstallGlobalFunction("SortIrreducibleModulesTrivialModuleFirst", function( irrs )
-    Sort(irrs, function( s , t )
-        if IsTrivialGModule(s) = true then 
-            return true;
-        else 
-            return false;
-        fi;
-    end);
-end);

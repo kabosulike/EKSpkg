@@ -7,5 +7,3 @@ DeclareGlobalFunction("IrreducibleNamesByDimension");
 DeclareGlobalFunction("AddIrreducibleNamesByDimension");
 
 DeclareGlobalFunction("IrreducibleGModules");
-
-DeclareGlobalFunction("SortIrreducibleModulesTrivialModuleFirst");
