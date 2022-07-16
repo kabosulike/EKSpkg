@@ -1,3 +1,12 @@
+# string ---------------------------------------------------
+DeclareGlobalFunction("UpperToLowerChar");
+
+DeclareGlobalFunction("UpperToLowerString");
+
+DeclareGlobalFunction("HasContiguousSubstring");
+# -----------------------------------------------------------
+
+
 DeclareGlobalFunction("MutableCopyGModule");
 
 DeclareGlobalFunction("MinimalCopyGModule");

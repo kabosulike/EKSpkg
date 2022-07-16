@@ -1,3 +1,48 @@
+# string >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	InstallGlobalFunction("UpperToLowerChar", function(ch)
+		if IsUpperAlphaChar(ch) then 
+			return CharInt(IntChar(ch) - IntChar('A') + IntChar('a'));
+		else 
+			return ch;
+		fi;	
+	end);
+
+	InstallGlobalFunction("UpperToLowerString", function(str)
+		local i, ans;
+		
+		ans := "";
+		for i in str do
+			Add(ans, UpperToLowerChar(i));
+		od;
+			
+		return ans;
+	end);
+
+	InstallGlobalFunction("HasContiguousSubstring", function(str, sub)
+		local i, any, j;
+		
+		for i in [1..Size(str)] do 
+			if i-1+Size(sub) >= Size(str) then break; fi;
+
+			any := true;
+			for j in [1..Size(sub)] do 
+				if str[i+j] <> sub[j] then 
+					any := false; 
+					break; 
+				fi;
+			od;
+
+			if any then 
+				return true;	
+			fi;
+		od;
+		return false;
+	end);
+
+# string <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 InstallGlobalFunction("MutableCopyGModule", function( m )
     local copy;
 
@@ -46,18 +91,21 @@ end);
 	#		characteristicPolynomial のせいで x_1 などが入る場合
 	#		~ のせいで recursion error が出る場合
 InstallGlobalFunction("RemoveBadComponents", function(re)
-	local bad, i;
+	local bad, i, f;
 
 	if not IsRecord(re) then return; fi;
 	
 	bad := [
 		# "smashMeataxe", # 以下の bad components を含むことがある
-		"characteristicPolynomial", # x_1 などが入ることがある
-		"charpolFactors", # x_1 などが入ることがある
+		# "characteristicPolynomial", # x_1 などが入ることがある
+		# "charpolFactors", # x_1 などが入ることがある
+		# "centMatMinPoly", # x_1 などが入ることがある
 		"indecomposition" # ~ が入ることがある
 	];
 	for i in RecNames(re) do
-		if i in bad then 
+		f := HasContiguousSubstring(UpperToLowerString(i), "pol");
+
+		if (i in bad) or f then 
 			if IsMutable(re) then
 				Unbind(re.(i)); 
 			else 
