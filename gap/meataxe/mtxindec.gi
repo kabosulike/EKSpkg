@@ -112,7 +112,7 @@ end);
 #  list : <list>[i] is an indecomposable kg-module with vertex <q> and source <src>.
 InstallGlobalFunction("AllIndecomposableGModulesFixedVertexSourcePair", function(g, q, src)
 # Remark : don't check <src> has a vertex <q> as kq-module.
-    local m, indecomp, list, smd, smd2, ans, tmp, br;
+    local m, indecomp, list, smd, smd2, ans, tmp, r ;
 
 
     m := InductionOfGModule( g, q, src );
@@ -122,20 +122,26 @@ InstallGlobalFunction("AllIndecomposableGModulesFixedVertexSourcePair", function
 
     ans := [];
     for smd in list do # <smd> are direct summand of indecued module
-        smd2 := ShallowCopy( smd ); # mutable, kg-module
+		smd2 := MutableCopyGModule(smd);
         # Remark :
         #   smd.vertexClass := q^g;# immutable
         #   smd.source := src;# immutable
 
-        # add record
-        # br := BrauerMorphismOfEndRing(g,q,smd2);
-        if q in VertexClass( g, smd2 ) then
-        # i.e. if not IsZeroDimensionOfImage(br) then 
-            # smd2.vertexClass := q^g; # mutable
-            smd2.vertexGroup := q;# mutable
-            smd2.source := src;# mutable
-            Add(ans, smd2);
-        fi;
+		# Since <smd2> is <q>-proj, we have
+		# [ forall maximal subgroup <r> of <q> s.t. not <r>-proj ]
+		#	=> <q> is a vertex of <smd2>.
+		any := true;
+		for r in MaximalSubgroups(q) do
+			if HigmansCriterion(g, r, smd2) then 
+				any := false; 
+				break;
+			fi;
+		od;
+		if any then 
+			smd2.vertexGroup := q;
+            smd2.source := src;
+			Add(ans, smd2);
+		fi;
     od;
 
     return ans;
@@ -144,12 +150,11 @@ end);
 
 
 
-
 # <g> is a finitegroup,
 # <k> is a finite field,
 # This function calcurates the list of all indecomposable modules with cyclic vertex.
 # This function returns a record.
-InstallGlobalFunction(	"AllIndecomposableModulesCyclicVertex", function( g, k )
+InstallGlobalFunction("AllIndecomposableModulesCyclicVertex", function( g, k )
     local p, m, subs, ind, inds1, inds2, q, srcs, s, tmp1, decs, tmp2, result, li_v, li_s;
 
     p := Characteristic(k);
@@ -190,7 +195,7 @@ InstallGlobalFunction(	"AllIndecomposableModulesCyclicVertex", function( g, k )
 
     return rec(
         modules := result,
-		vertices := li_v,  # lis of vertices
+		vertices := li_v,  # list of vertices
 		sources := li_s,   # list of source modules
         indicesV := inds1, # list of indices classes same vertex group
         indicesS := inds2, # list of indices classes same source module
