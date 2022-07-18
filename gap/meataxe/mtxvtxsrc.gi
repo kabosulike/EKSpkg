@@ -59,9 +59,9 @@ InstallGlobalFunction("VertexClassOfGModule", function(g, m)
         return g^g;
     fi;
 
-    if not MTX.IsIndecomposable(m) then
-        Error("This module is not indecomposable.");
-    fi;
+    # if not MTX.IsIndecomposable(m) then
+    #     Error("This module is not indecomposable.");
+    # fi;
 
     cc := ModularConjugacyClassesSubgroups(g, Characteristic(m.field));
 
@@ -74,6 +74,8 @@ InstallGlobalFunction("VertexClassOfGModule", function(g, m)
             return c;
         fi;
     od;
+
+	return fail;
 end);
 
 
