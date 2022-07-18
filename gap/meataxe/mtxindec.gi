@@ -112,7 +112,7 @@ end);
 #  list : <list>[i] is an indecomposable kg-module with vertex <q> and source <src>.
 InstallGlobalFunction("AllIndecomposableGModulesFixedVertexSourcePair", function(g, q, src)
 # Remark : don't check <src> has a vertex <q> as kq-module.
-    local m, indecomp, list, smd, smd2, ans, tmp, r ;
+    local m, indecomp, list, smd, smd2, ans, tmp, r , any;
 
 
     m := InductionOfGModule( g, q, src );
