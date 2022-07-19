@@ -78,17 +78,83 @@ InstallGlobalFunction("VertexClassOfGModule", function(g, m)
 	return fail;
 end);
 
+#
+	# <mo> is <q>-projective <g>-module
+	# Return : a vertex group of <mo>
+	# Description : This function checks subgroups of <q> sorted descending order.
+	# Memo : <q> is not necessarily p-group
+InstallGlobalFunction("VertexGroupOfGModuleDescending", function(g, q, mo)
+	local ans, r;
+	
+	ans := q;
+	for r in MaximalSubgroups(q) do
+		if HigmansCriterion(g, r, mo) then 
+			ans := VertexGroupOfGModuleDescending(g, r, mo);
+			break;
+		fi;
+	od;
 
-InstallGlobalFunction("VertexGroupOfGModule", function(g, m)
-    # if IsBound then it use.
-    if IsBound(m.vertexGroup) then 
-        return m.vertexGroup;
-    elif IsBound(m.vertexClass) then 
-        return Representative(m.vertexClass);
-    fi;
+	return ans;
+end);
 
-    # if not IsBound then calc vertex class.
-    return Representative(VertexClassOfGModule(g,m));
+#
+	# <args> := [ g, mo, (ord, q) ]
+	#	<q> is a subgroup of <g>,
+	# 	<mo> is <q>-projective MTX <g>-module,
+	# 	<ord> is an integer.
+	# Default : 
+	#	<ord> := 1,
+	#	<q> := Sylow subgroup of <g>.
+	# Memo : <q> is not necessarily p-group
+	#
+	# If ord =  1 then check subgroups of <q> ascending order.
+	# If ord = -1 then check subgroups of <q> descending order. 
+InstallGlobalFunction("VertexGroupOfGModule", function(args...)
+	local g, mo, ord, p, q, r, sub, sz;
+
+	# args >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		sz := Size(args);
+		if sz in [2,3,4] then
+			g := args[1];
+			mo := args[2];
+			ord := 1;
+
+			p := Characteristic(mo.field);
+
+			if sz >= 3 then 
+				ord := args[3];			
+			fi;
+
+			if sz = 4 then 
+				q := args[4];
+			else 
+				q := SylowSubgroup(g,p);
+			fi;
+		else
+			Error( " ------------- wrong number of arguments --------------------------\n");
+		fi;
+	# args <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+	
+
+	if ord = 1 then 
+		sub := ModularConjugacyClassesSubgroups(g, Characteristic(mo.field));
+		sub := List(sub, Representative);
+		sub := Filtered(sub, i->Order(i) <= Order(q));
+		Sort(sub, function(q0, q1)
+			return Order(Representative(q0)) < Order(Representative(q1));
+		end);
+
+		for r in sub do
+			if HigmansCriterion(g, r, mo) then
+			    return r;
+			fi;
+		od;
+
+	elif ord = -1 then 
+		return VertexGroupOfGModuleDescending(g, q, mo);
+	fi;
+
+	return fail;
 end);
 
 

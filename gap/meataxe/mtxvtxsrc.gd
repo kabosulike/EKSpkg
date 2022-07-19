@@ -6,6 +6,8 @@ DeclareGlobalFunction("VertexClassOfGModule");
 
 DeclareSynonym("VertexClass", VertexClassOfGModule);
 
+DeclareGlobalFunction("VertexGroupOfGModuleDescending");
+
 DeclareGlobalFunction("VertexGroupOfGModule");
 
 DeclareGlobalFunction("VertexClassOfGModuleAddRecord");
