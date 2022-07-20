@@ -168,7 +168,8 @@ InstallGlobalFunction("VertexGroupOfGModule", function(args...)
 		od;
 
 	elif ord = -1 then 
-		VertexGroupOfGModuleDescending(g, q, mo);
+		r := VertexGroupOfGModuleDescending(g, q, mo);
+		if IsMutable(mo) then mo.vertex := r; fi;
 		return r;
 	fi;
 
