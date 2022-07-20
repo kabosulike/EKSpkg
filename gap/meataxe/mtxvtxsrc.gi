@@ -45,6 +45,22 @@ InstallGlobalFunction("BrauerMorphismOfEndRing", function(args...)
 end);
 
 
+# <mo> is a MTX <g>-module,
+# <q> is a subgroup of <g>
+# Return true iff <q> is a precisely vertex of a <g>-module <mo>
+InstallGlobalFunction("IsPreciselyVertex", function(g, q, mo)
+	local r;
+	if not HigmansCriterion(g, q, mo) then return false; fi ;
+
+	for r in MaximalSubgroups(q) do 
+		if HigmansCriterion(g, r, mo) then 
+			return false;
+		fi;
+	od;
+	return true;
+end);
+
+
 InstallGlobalFunction("VertexClassOfGModule", function(g, m)
     local
     cc,
@@ -90,6 +106,7 @@ InstallGlobalFunction("VertexGroupOfGModuleDescending", function(g, q, mo)
 	for r in MaximalSubgroups(q) do
 		if HigmansCriterion(g, r, mo) then 
 			ans := VertexGroupOfGModuleDescending(g, r, mo);
+			if IsMutable(mo) then mo.vertex := ans; fi;
 			break;
 		fi;
 	od;
@@ -135,7 +152,6 @@ InstallGlobalFunction("VertexGroupOfGModule", function(args...)
 		fi;
 	# args <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 	
-
 	if ord = 1 then 
 		sub := ModularConjugacyClassesSubgroups(g, Characteristic(mo.field));
 		sub := List(sub, Representative);
@@ -146,13 +162,17 @@ InstallGlobalFunction("VertexGroupOfGModule", function(args...)
 
 		for r in sub do
 			if HigmansCriterion(g, r, mo) then
-			    return r;
+				if IsMutable(mo) then mo.vertex := r; fi;
+				return r;
 			fi;
 		od;
 
 	elif ord = -1 then 
-		return VertexGroupOfGModuleDescending(g, q, mo);
+		VertexGroupOfGModuleDescending(g, q, mo);
+		return r;
 	fi;
+
+	
 
 	return fail;
 end);
@@ -242,29 +262,25 @@ InstallGlobalFunction("HomogeneousComponentsOfGModuleAddVetexGroupSourceModule",
 end);
 
 
-InstallGlobalFunction("SourceOfGModule", function(g, m, v)
-    local
-    I, # indecomposable summands of m restricted to v
-    t,
-    II, # indecomposable summands of
-    tt;
 
-    # if not MTX.IsIndecomposable(m) then
-    #     Error("This module is not indecomposable.");
-    # fi;
+# <mo> is a MTX <g>-module with vertex <vx>
+#	i.e. <mo> is a precisely <vx>-projective
+# memo : <mo> is not necessarily indecomposable
+# Return : a source module of <mo>
+InstallGlobalFunction("SourceOfGModule", function(g, mo, vx)
+	local res, hc, i, s;
+	
+	res := RestrictedGModule(g, vx, mo);
+	hc := MTX.HomogeneousComponents(res);
 
-    if Size(GeneratorsOfGroup(v)) = 0 then
-        v := Subgroup(g, [One(g)]); # Generatorが空リストにならない単位群を作るため
-    fi;
-    
-    I := List(MTX.HomogeneousComponents(RestrictedGModule(g, v, m)), h->h.component[2]);
-    for t in I do
-        II := List(MTX.HomogeneousComponents(InductionOfGModule(g, v, t)), h->h.component[2]);
-        
-        for tt in II do
-            if MTX.IsomorphismModules(m, tt) <> fail then
-                return t;
-            fi;
-        od;
-    od;
+	for i in hc do
+		s := i.component[2];
+		if IsPreciselyVertex(vx, vx, s) then 
+			if IsMutable(mo) then mo.source := s; fi;
+			return s;
+		fi;
+	od;
+	
+	return fail;
+
 end);

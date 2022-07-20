@@ -50,15 +50,8 @@ end);
 # <h>: subgroup of g
 # <m>: module of g
 InstallGlobalFunction("HigmansCriterion", function(g,h,m)
-    local
-    r,
-    I,
-    bh,
-    bg,
-    rc,
-    tr;
-
-    r := GroupHomomorphismByImages(g,GL(m.dimension,m.field),m.generators);
+    local r,I,bh,bg,rc,tr;
+	
     I := IdentityMat(m.dimension, m.field);
     bh := MTX.BasisModuleEndomorphisms(RestrictedGModule(g,h,m));
     bg:= MTX.BasisModuleEndomorphisms(m);
