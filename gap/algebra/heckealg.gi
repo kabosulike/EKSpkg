@@ -48,6 +48,7 @@ end);
 #    すると，module の generator との順番が合わなくなる場合がある．
 InstallGlobalFunction("IdempotentHeckeAlgebraWithSmallGenerators", function( args... )
     local 
+		cnt,
         alg, e,
         g,emb, sub,rem,a,pos,vec, 
         gens; #generators of subalgebra
@@ -73,8 +74,14 @@ InstallGlobalFunction("IdempotentHeckeAlgebraWithSmallGenerators", function( arg
     sub := Subalgebra( alg, gens );
     vec := Subspace( alg, List( Basis( alg ), x-> e * x * e ) );
 
+	cnt := 0;
     while Dimension(sub) <> Dimension(vec)  do # <gens> に元を追加して取り直し
+		cnt := cnt + 1;
+		if cnt > 5000 then Error("------- large count ------------------\n"); fi;
+
         a := Random( alg );
+		if not IsUnitInAlgebra(alg, a) then continue; fi;
+
         Add( gens, e * a * e );
         sub := Subalgebra( alg, gens );    
     od;
