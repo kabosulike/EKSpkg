@@ -48,8 +48,8 @@ end);
 InstallGlobalFunction("RestrictedGModule", function(g, h, m)
 
 	
-	if IsBound(m.rep) then 
-		return RestrictedGModuleGivenRepresentation(m.rep, h, m);
+	if IsBound(m.representation) then 
+		return RestrictedGModuleGivenRepresentation(m.representation, h, m);
 	else 
     	return RestrictedGModuleWithRepresentation(g, h, m).module;    
 	fi;
