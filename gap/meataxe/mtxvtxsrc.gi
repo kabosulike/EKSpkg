@@ -31,15 +31,10 @@ InstallGlobalFunction("BrauerMorphismOfEndRing", function(args...)
     mfh := VectorSpace(m.field, MTX.BasisModuleEndomorphisms(RestrictedGModule(g,h,m)));
 
     n := TrivialSubspace(mfh);
-    for cc in ConjugacyClassesSubgroups(h) do
-        if h in cc then
-            continue;
-        fi;
-        for k in cc do
-            tr := TraceMap(g, h, k, m);
-            mfk := VectorSpace(m.field, MTX.BasisModuleEndomorphisms(RestrictedGModule(g,k,m)));
-            n := n + Subspace(mfh, List(Basis(mfk), b -> b^tr));
-        od;
+    for k in MaximalSubgroups(h) do
+		tr := TraceMap(g, h, k, m);
+		mfk := VectorSpace(m.field, MTX.BasisModuleEndomorphisms(RestrictedGModule(g,k,m)));
+		n := n + Subspace(mfh, List(Basis(mfk), b -> b^tr));
     od;
     return NaturalHomomorphismBySubspace(mfh, n);
 end);
