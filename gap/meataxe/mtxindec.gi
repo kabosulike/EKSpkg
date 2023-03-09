@@ -155,7 +155,7 @@ end);
 # This function calcurates the list of all indecomposable modules with cyclic vertex.
 # This function returns a record.
 InstallGlobalFunction("AllIndecomposableModulesCyclicVertex", function( g, k )
-    local p, m, subs, ind, inds1, inds2, q, srcs, s, tmp1, decs, tmp2, result, li_v, li_s;
+    local p, m, subs, ind, inds1, inds2, q, srcs, s, tmp1, decs, tmp2, result, li_v, li_s, i;
 
     p := Characteristic(k);
     subs := ModularConjugacyClassesSubgroups( g, p );
@@ -169,18 +169,20 @@ InstallGlobalFunction("AllIndecomposableModulesCyclicVertex", function( g, k )
 	li_v := []; li_s := []; # list of vertices, sources
     for q in subs  do
         srcs := AllIndecomposableFullVertexGModulesOfCyclicPGroup( q, k ); # source modules
-		Add(li_v, q);
 
         tmp1 := [];
         for s in srcs do
 			s := MinimalCopyGModule(s);
-			Add(li_s, s);
 
             # modules
             decs := AllIndecomposableGModulesFixedVertexSourcePair( g, q, s ); # all indecomposable modules with vertex source <q>,<s>
             for m in decs do
                 m.sourceModule := s;
             od;
+			for i in [1..Size(decs)] do
+				Add(li_v, q);
+				Add(li_s, s);
+			od;
             Append( result , decs );
 
             # indices
@@ -193,10 +195,13 @@ InstallGlobalFunction("AllIndecomposableModulesCyclicVertex", function( g, k )
         Add( inds1, Concatenation(tmp1) );
     od;
 
+	Assert(0, Size(li_v) = Size(result));
+	Assert(0, Size(li_s) = Size(result));
+
     return rec(
         modules := result,
-		vertices := li_v,  # list of vertices
-		sources := li_s,   # list of source modules
+		vertices := li_v,  # list of vertices: vertices[i] = vertex of modules[i]
+		sources := li_s,   # list of source modules : sources[i] = source of modules[i]
         indicesV := inds1, # list of indices classes same vertex group
         indicesS := inds2, # list of indices classes same source module
     );

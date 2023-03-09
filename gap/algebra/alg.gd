@@ -1,3 +1,7 @@
+DeclareGlobalFunction( "InverseElementInAlgebra" );
+
+DeclareGlobalFunction( "IsUnitInAlgebra" );
+
 DeclareGlobalFunction("TopOfAlgebra");
 
 DeclareGlobalFunction("TmpCoefficient");

@@ -1,3 +1,70 @@
+# 
+	# <args> is a list 
+	#	[ <alg>, <x>(, <one> ) ]
+	# 	which size is 2 or 3.
+	# Where 
+	# <alg> is an algebra, 
+	# <x> is an element in <alg>,
+	# <one> is 1_{<alg>}.
+	#
+	# Returns : a element in <alg> or fail
+	#	
+	# If <x> is a unit in <alg>,
+	# then this function returns the inverse element of <x> in <alg>.
+	# Otherwise, this function returns fail.
+InstallGlobalFunction( "InverseElementInAlgebra" , function(args...)
+	local bas, mat, one, v, oneVec,
+		x, alg;
+	
+	# args >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		if not Size(args) in [1,2,3] then
+			Error( "Wrong Size(<args>)--------------------------\n");
+		fi;
+	
+		# IsUnitInAlgebra のための，便宜上のケース
+		if Size(args) = 1 and IsList(args) then 
+			args := args[1];
+		fi;
+
+		# 本来のケース
+		alg := args[1];
+		x := args[2];
+		if Size(args) = 2 then
+			one := One(alg);
+		elif Size(args) = 3 then
+			one := args[3];
+		fi;
+	# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+
+	bas := Basis(alg);
+	mat := RepresentationMatrix( x, alg, OnRight );
+	oneVec := Coefficients( bas, one );
+	v := SolutionMat( mat, oneVec );
+
+	if v <> fail then 
+		return LinearCombination( bas, v );
+	else 
+		return fail;
+	fi;
+end );
+# 
+	# <args> is a list 
+	#	[ <alg>, <x>(, <one> ) ]
+	# 	which size is 2 or 3.
+	# Where 
+	# <alg> is an algebra, 
+	# <x> is an element in <alg>,
+	# <one> is 1_{<alg>}.
+	#
+	# Returns : true or false
+	# 	This function returns 
+	# 	true if x is a unit in <alg>,
+	# 	false otherwise. 
+InstallGlobalFunction( "IsUnitInAlgebra" , function(args...)
+	return InverseElementInAlgebra( args ) <> fail;
+end );
+
+
 InstallGlobalFunction("TopOfAlgebra", function(alg)
     local rad;
     rad := RadicalOfAlgebra(alg);

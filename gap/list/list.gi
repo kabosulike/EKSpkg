@@ -1,3 +1,13 @@
+### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+###  String 
+
+	InstallOtherMethod( \+,
+		[ IsString, IsString ],
+		function( s, t )
+			return Concatenation(s, t);
+	end );
+
+### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 InstallGlobalFunction("ForEach", function(list, func)
     local x;

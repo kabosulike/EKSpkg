@@ -10,12 +10,10 @@ InstallGlobalFunction("IdempotentHeckeInteriorGAlgebra", function( e, h, a )
     g := UnderlyingMagma(kg);
     emb := Embedding(g,kg);
     eae := IdempotentHeckeAlgebraWithSmallGenerators( e, a );
-    st := MappingByFunction( h, eae, x -> x^emb * e );
-    # st := GroupHomomorphismByImages( h, eae, List( GeneratorsOfGroup(h), x-> x^Embedding(g,kg) * e ) );
 
     return rec(
         algebra := eae,
-        structuralMap := st,
+		generators := List( GeneratorsOfGroup(h), x-> x^emb * e),
         one := e
     );
 end);

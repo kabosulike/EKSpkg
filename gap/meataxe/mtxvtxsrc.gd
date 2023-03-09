@@ -2,9 +2,13 @@ DeclareGlobalFunction("BrauerMorphismOfEndRing");
 
 DeclareSynonym("BrauerMorphismOfEndmorphismRing", BrauerMorphismOfEndRing);
 
+DeclareGlobalFunction("IsPreciselyVertex");
+
 DeclareGlobalFunction("VertexClassOfGModule");
 
 DeclareSynonym("VertexClass", VertexClassOfGModule);
+
+DeclareGlobalFunction("VertexGroupOfGModuleDescending");
 
 DeclareGlobalFunction("VertexGroupOfGModule");
 

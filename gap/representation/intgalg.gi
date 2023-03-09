@@ -1,3 +1,16 @@
+####################################################################
+#% Description of interior G-algebra
+
+	# A record <intA> is called interior G-algebra 
+	# if <intA> has components .algebra, .generators (, .one ) . 
+	# Where, 
+	#  intA.algebra is an algebra,
+	#  intA.generators is the image a structural map of a generators of G,
+	#  intA.one is the one of intA.algebra.
+####################################################################
+
+
+
 # Args
 # args = [ module, e, h, kg, ekge ] or
 #        [ module, e, h, kg ]
@@ -109,8 +122,7 @@ InstallGlobalFunction("RestrictedModuleOfInteriorGAlgebra", function( alg, q, m 
         m.representation := rep;
     fi;
 
-    st := alg.structuralMap;
-    gens := List( GeneratorsOfGroup(q) , x -> (x^st)^rep );
+    gens := List( alg.generators , x -> x^rep );
     k := LeftActingDomain(a);
     res := GModuleByMats( gens, k );
 

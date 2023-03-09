@@ -27,10 +27,10 @@ end);
 InstallGlobalFunction("PermutationMatricesByGroupAction", function(G, S, F, Action)
     local mats, elms, d, zero, i, mat, j, o;
     elms := AsList( G );
-    d    := Length(elms);
+    d    := Size(elms);
     zero := NullMat( d, d, F );
     mats := [];
-    for i in [1..Length( S )] do
+    for i in [1..Size( S )] do
         mat := List( zero, ShallowCopy ); 
         for j in [1..d] do
             o := Position( elms, Action(elms[j], S[i]));
