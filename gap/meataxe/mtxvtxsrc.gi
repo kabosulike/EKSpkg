@@ -95,18 +95,31 @@ end);
 	# Description : This function checks subgroups of <q> sorted descending order.
 	# Memo : <q> is not necessarily p-group
 InstallGlobalFunction("VertexGroupOfGModuleDescending", function(g, q, mo)
-	local ans, r;
-	
-	ans := q;
-	for r in MaximalSubgroups(q) do
-		if HigmansCriterion(g, r, mo) then 
-			ans := VertexGroupOfGModuleDescending(g, r, mo);
-			if IsMutable(mo) then mo.vertex := ans; fi;
-			break;
-		fi;
-	od;
+	local ans, r, que, qi, cu;
 
+	que := []; # queue
+	qi := 0; # index of que
+	ans := q; # answer
+
+	Add(que, q);
+	qi := qi + 1;
+
+	while qi <= Size(que) do 
+		cu := que[qi]; # current 
+		qi := qi + 1;
+		ans := cu;
+
+		for r in MaximalSubgroups(cu) do # g-conj で類別しても良い
+			if HigmansCriterion(g, r, mo) then 
+				Add(que, r);
+			fi;
+		od;
+
+	od;
+	
+	if IsMutable(mo) then mo.vertex := ans; fi;
 	return ans;
+
 end);
 
 #
