@@ -94,23 +94,20 @@ end);
 	# Return : a vertex group of <mo>
 	# Description : This function checks subgroups of <q> sorted descending order.
 	# Memo : <q> is not necessarily p-group
+	# Ref: 永尾, 津島 P257 定理 3.3(b)
 InstallGlobalFunction("VertexGroupOfGModuleDescending", function(g, q, mo)
-	local ans, r, t;
+	local r,ans;
 	
-	ans := q;
-	for r in MaximalSubgroups(q) do
+	for r in MaximalSubgroups(q) do # <g>-conj でも良い．一般には，どちらが速いか不明．
 		if HigmansCriterion(g, r, mo) then 
-			t := VertexGroupOfGModuleDescending(g, r, mo);
-			if Order(t) < Order(ans) then 
-				ans := t; 
-				if IsMutable(mo) then mo.vertex := ans; fi;
-			fi; 
+			ans := VertexGroupOfGModuleDescending(g, r, mo);
+			if IsMutable(mo) then mo.vertex := ans; fi;
 
-			break;
+			return ans;
 		fi;
 	od;
 
-	return ans;
+	return q;
 end);
 
 #
