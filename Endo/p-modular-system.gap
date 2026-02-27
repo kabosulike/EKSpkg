@@ -129,7 +129,7 @@ end;
 # Return : 
 # 	<quotient_field> における <p_prime_element> の Brauer char の値
 BrauerCharacterOfGModule := function(group, module, quotient_field, p_prime_element)
-	local residue_field, prime, matrix, trace, MatrixRepresentationByGModule; 
+	local residue_field, prime, matrix, trace, MatrixRepresentationByGModule, representation; 
 
 	# make a matrix representation by a GModule 
 	MatrixRepresentationByGModule := function(g, m)
@@ -143,12 +143,24 @@ BrauerCharacterOfGModule := function(group, module, quotient_field, p_prime_elem
 
 		return GroupHomomorphismByImages(g, GL(m.dimension, m.field), gens, m.generators);
 	end;
+
+	# the unit element of <group>
+	if p_prime_element = One(group) then return module.dimension; fi;
 	
-	representation := MatrixRepresentationByGModule(group, module);
+	# representation of <module>
+	if IsBound(module.representation) then 
+		representation := module.representation; 
+	else 
+		representation := MatrixRepresentationByGModule(group, module);
+		if IsMutable(module) then module.representation := representation; fi;
+	fi;
+	
+	# field
 	residue_field := module.field; 
 	prime := Characteristic(residue_field);
 	Assert(0, Order(p_prime_element) mod prime <> 0);
 
+	# Brauer character 
 	matrix := p_prime_element ^ representation;
 	trace := Trace(matrix);
 	return LiftingNewtonMethod(quotient_field, residue_field, trace);
@@ -175,3 +187,44 @@ end;
 	# Print("Braucr : ", br, "\n");
 ## end Debug <<<<<<<<<<<<<<<<<<< 
 
+
+BrauerCharacterTableOfGModule := function(group, module, quotient_field)
+	local recidue_field, prime, p_prime_conjugacies, brauer_character_table, p_prime_element;
+
+	# field
+	recidue_field := module.field;
+	prime := Characteristic(residue_field);
+	
+	# conjugacy classes
+	p_prime_conjugacies := Filtered(ConjugacyClasses(CharacterTable(group)), 
+		i-> Order(Representative(i)) mod prime <> 0 
+	);
+
+	brauer_character_table := [];
+	for p_prime_element in p_prime_conjugacies do
+		p_prime_element := Representative(p_prime_element);
+		Add(brauer_character_table, BrauerCharacterOfGModule(group, module, quotient_field, p_prime_element));
+	od;
+
+	return rec(
+		p_prime_conjugacy_classes := p_prime_conjugacies,
+		brauer_character_table := brauer_character_table, 
+	);
+end;
+## Debug >>>>>>>>>>>>>>>>>>>>>> 
+	# prime := 3;
+	# degree := 2;
+	# field := GF(prime, degree);
+	# # group := AlternatingGroup(5); # Error: prime :=2, degree := 2, Assert(0, a > 0);
+	# group := SymmetricGroup(4);
+
+	# p_modular := PModularSystem(prime, degree);
+	# quotient_field := p_modular[1];
+	# residue_field := p_modular[2];
+	
+	# for module in IrreducibleModules(group, field)[2] do
+	# 	br := BrauerCharacterTableOfGModule(group, module, quotient_field);
+
+	# 	Print("Braucr : ", br, "\n");
+	# od;
+## end Debug <<<<<<<<<<<<<<<<<<< 
