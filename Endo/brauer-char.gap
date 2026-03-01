@@ -166,26 +166,73 @@ BrChar := function()
 
 	end;
 
+	
+	# <module> の体が十分大きいとする．
+	# arguments : 
+	# 	<module> : MTX-module of <group>
+	# return: record <ans>
+	# 	ans.p_prime_conjugacy_classes : p'-element を含む，<group> における共役類
+	# 	ans.brauer_characters : <module> に対する Brauer character の各 <p_prime_conjugacy_classes> における値のリスト．
+	public.BrauerCharactersOfGModule := function(group, module)
+		local residue_field, quotient_field, prime, p_prime_conjugacies, brauer_characters, p_prime_element, degree;
+
+		# fields
+		residue_field := module.field;
+		prime := Characteristic(residue_field);
+		degree := private.DegreeOfFiniteField(residue_field);
+		quotient_field := public.QuotientField(prime, degree);
+
+		# conjugacy classes
+		p_prime_conjugacies := Filtered(ConjugacyClasses(CharacterTable(group)), 
+			i-> Order(Representative(i)) mod prime <> 0 
+		);
+
+		brauer_characters := [];
+		for p_prime_element in p_prime_conjugacies do
+			p_prime_element := Representative(p_prime_element);
+			Add(brauer_characters, public.BrauerCharacterOfGModule(group, module, p_prime_element));
+		od;
+
+		return rec(
+			p_prime_conjugacy_classes := p_prime_conjugacies,
+			brauer_characters := brauer_characters, 
+		);
+	end;
+
+
+	# <module> の体が十分大きいとする．
+	# arguments : 
+	# 	<module> : MTX-module of <group>
+	# return: record <ans>
+	# 	ans.p_prime_conjugacy_classes : p'-element を含む，<group> における共役類
+	# 	ans.table : <module> に対する Brauer character table
+	public.BrauerCharacterTableOfGModule := function(group, residue_field)
+		local brauer_character_table, irr, brauer_characters, p_prime_conjugacy_classes;
+
+		# brauer character table
+		brauer_character_table := [];
+		for irr in IrreducibleModules(group, residue_field)[2] do
+			brauer_characters := public.BrauerCharactersOfGModule(group, irr);
+
+			p_prime_conjugacy_classes := brauer_characters.p_prime_conjugacy_classes;
+			Add(brauer_character_table, brauer_characters.brauer_characters);
+		od;
+		
+		return rec(
+			p_prime_conjugacy_classes := p_prime_conjugacy_classes, 
+			table := brauer_character_table, 
+		);
+	end;
+	
 	return public;
 end;
 ## Debug >>>>>>>>>>>>>>>>>>>>>> 
-	# # group := AlternatingGroup(5); # p = 2, degree = 4 で OK 
-	# group := SL(2,3); # p = 2, degree = 4 で OK 
+	# group := AlternatingGroup(5); # p = 2, degree = 4 で OK 
+	# # group := SL(2,3); # p = 2, degree = 4 で OK 
 	# prime := 2;
 	# degree := 4;
 	# field := GF(prime, degree);
 
-	# for irr in IrreducibleModules(group, field)[2] do
-	# 	### A5
-	# 	# br_char := BrChar().BrauerCharacterOfGModule(group, irr, ());
-	# 	# br_char := BrChar().BrauerCharacterOfGModule(group, irr, (1,2,3,4,5));
-	# 	# br_char := BrChar().BrauerCharacterOfGModule(group, irr, (3,1,4,2,5));
-		
-	# 	### SL(2,3)
-	# 	# br_char := BrChar().BrauerCharacterOfGModule(group, irr, [[1,0],[0,1]]*One(GF(3,1)));
-	# 	br_char := BrChar().BrauerCharacterOfGModule(group, irr, [[1,1],[0,1]]*One(GF(3,1)));
-	# 	# br_char := BrChar().BrauerCharacterOfGModule(group, irr, ([[1,1],[0,1]]*One(GF(3,1)))^(-1));
-
-	# 	Display(br_char);
-	# od;
+	# Display(group);
+	# Display(BrChar().BrauerCharacterTableOfGModule(group, field).table);
 ## end Debug <<<<<<<<<<<<<<<<<<< 
