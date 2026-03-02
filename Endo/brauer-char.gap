@@ -171,10 +171,10 @@ BrChar := function()
 		br_char := Zero(quotient_field);
 		eigen_values := private.Eigenvalues(residue_field, regular_element ^ representation);
 		for eigen_value in eigen_values do
-			# index := private.PrimitiveElementIndex(residue_field, eigen_value);
-			index := LogFFE(eigen_value,  Z(q));
-			# val := PrimitiveElement(quotient_field) ^ index;
-			val := E(q-1) ^ index;
+			index := private.PrimitiveElementIndex(residue_field, eigen_value);
+			# index := LogFFE(eigen_value,  Z(q));
+			val := PrimitiveElement(quotient_field) ^ index;
+			# val := E(q-1) ^ index;
 			br_char := br_char + val;
 		od;
 		return br_char; 		
@@ -290,8 +290,8 @@ BrChar := function()
 	return public;
 end;
 ## Debug >>>>>>>>>>>>>>>>>>>>>> 
-	# # group := AlternatingGroup(5); # p = 2, degree = 4 で OK 
-	# group := SL(2,3); # p = 2, degree = 4 で OK 
+	# group := AlternatingGroup(5); # p = 2, degree = 4 で OK 
+	# # group := SL(2,3); # p = 2, degree = 4 で OK 
 	# prime := 2;
 	# degree := 4;
 	# field := GF(prime, degree);
